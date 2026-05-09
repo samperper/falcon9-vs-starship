@@ -1,3 +1,4 @@
+import Bibliography from './components/Bibliography';
 import CustomerContext from './components/CustomerContext';
 import Section from './components/Section';
 import SideBySideModel from './components/SideBySideModel';
@@ -40,9 +41,7 @@ function App() {
         </Section>
 
         <Section eyebrow="Section 04" title="Closer + Sources">
-          <div className="rounded-lg border border-dashed border-white/15 bg-surface/50 p-8 text-zinc-400">
-            Phase 4 will add the human-written closer and minimal source list.
-          </div>
+          <Bibliography />
         </Section>
       </div>
     </main>

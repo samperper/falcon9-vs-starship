@@ -33,7 +33,7 @@ function MathTable({ vehicle, economics }) {
             <tr key={row.id} className="border-b border-white/[0.07]">
               <td className="px-4 py-3 text-zinc-400">
                 {row.label}
-                <Cite sourceIds={vehicle.modelInputs[row.inputId].sources} />
+                <Cite sourceIds={vehicle.modelInputs[row.inputId].sources} accent={vehicle.accent} />
               </td>
               <td className="px-4 py-3 text-right text-zinc-200">
                 {formatMoneyFull(economics.components[row.id])}
@@ -47,7 +47,7 @@ function MathTable({ vehicle, economics }) {
           <tr className="border-b border-white/[0.07]">
             <td className="px-4 py-3 text-zinc-400">
               List price
-              <Cite sourceIds={vehicle.metrics.listPrice.sources} />
+              <Cite sourceIds={vehicle.metrics.listPrice.sources} accent={vehicle.accent} />
             </td>
             <td className="px-4 py-3 text-right text-zinc-200">{formatMoneyFull(listPrice)}</td>
           </tr>

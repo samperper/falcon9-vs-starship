@@ -102,13 +102,13 @@ function SideBySideModel() {
               </span>
             </span>
             <span
-              className={`relative h-7 w-12 rounded-full border transition ${
-                showPriceCeiling ? 'border-starship/50 bg-starship/25' : 'border-white/15 bg-black/50'
+              className={`relative h-7 w-12 rounded-full border transition-colors duration-200 ${
+                showPriceCeiling ? 'border-starship bg-starship' : 'border-white/15 bg-black/50'
               }`}
             >
               <span
-                className={`absolute top-1 h-5 w-5 rounded-full bg-text transition ${
-                  showPriceCeiling ? 'left-6 bg-starship' : 'left-1 bg-zinc-500'
+                className={`absolute left-1 top-1 h-5 w-5 rounded-full transition-transform duration-200 ${
+                  showPriceCeiling ? 'translate-x-5 bg-background' : 'translate-x-0 bg-zinc-500'
                 }`}
               />
             </span>

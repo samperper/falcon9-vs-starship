@@ -2,21 +2,35 @@ import {
   Bar,
   BarChart,
   CartesianGrid,
+  Cell,
   LabelList,
   ReferenceArea,
+  ReferenceLine,
   Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
 import { useEffect, useRef, useState } from 'react';
-import Cite from './Cite';
 import { formatMoney, toMillions } from '../lib/formatters';
 
 const componentColors = {
-  hardware: '#E5E5E5',
-  refurb: '#A3A3A3',
-  stageTwo: '#6B7280',
-  fuel: '#3F3F46',
+  falcon: {
+    hardware: '#0077DA',
+    refurb: '#0066BB',
+    stageTwo: '#0055A0',
+    fuel: '#004480',
+  },
+  starship: {
+    hardware: '#FF6B35',
+    refurb: '#E55A25',
+    stageTwo: '#CC4A15',
+    fuel: '#CC4A15',
+  },
+};
+
+const vehicleAccent = {
+  falcon: '#0077DA',
+  starship: '#FF6B35',
 };
 
 const componentLabels = {
@@ -73,7 +87,7 @@ function CostStackedBar({ items, showPriceCeiling, priceCeilingBand }) {
   const chartData = getChartData(items);
   const maxTotal = Math.max(...chartData.map((item) => item.total));
   const ceilingRange = priceCeilingBand.value;
-  const xMax = showPriceCeiling ? toMillions(ceilingRange.high) : Math.ceil(maxTotal * 1.35);
+  const xMax = showPriceCeiling ? toMillions(ceilingRange.high) + 28 : Math.ceil(maxTotal * 1.35);
   const chartHeight = chartWidth < 520 ? 360 : 300;
 
   useEffect(() => {
@@ -140,25 +154,59 @@ function CostStackedBar({ items, showPriceCeiling, priceCeilingBand }) {
               tickLine={false}
             />
             {showPriceCeiling ? (
-              <ReferenceArea
-                x1={toMillions(ceilingRange.low)}
-                x2={toMillions(ceilingRange.high)}
-                stroke="rgba(255,255,255,0.18)"
-                fill="rgba(255,255,255,0.07)"
-                label={{ value: 'ULA historical pricing', fill: '#A3A3A3', fontSize: 12, position: 'top' }}
-              />
+              <>
+                <ReferenceArea
+                  x1={toMillions(ceilingRange.low)}
+                  x2={toMillions(ceilingRange.high)}
+                  stroke="none"
+                  fill="rgba(229,229,229,0.025)"
+                />
+                <ReferenceLine
+                  x={toMillions(ceilingRange.mid)}
+                  stroke="rgba(229,229,229,0.34)"
+                  strokeDasharray="5 7"
+                  label={{ value: 'ULA era', fill: '#A3A3A3', fontSize: 12, position: 'right' }}
+                />
+              </>
             ) : null}
             <Tooltip content={<ChartTooltip />} cursor={{ fill: 'rgba(255,255,255,0.035)' }} />
-            <Bar dataKey="hardware" stackId="cost" fill={componentColors.hardware} radius={[4, 0, 0, 4]} />
-            <Bar dataKey="refurb" stackId="cost" fill={componentColors.refurb} />
-            <Bar dataKey="stageTwo" stackId="cost" fill={componentColors.stageTwo} />
-            <Bar dataKey="fuel" stackId="cost" fill={componentColors.fuel} radius={[0, 4, 4, 0]}>
+            <Bar dataKey="hardware" stackId="cost" radius={[4, 0, 0, 4]}>
+              {chartData.map((entry) => (
+                <Cell key={`hardware-${entry.name}`} fill={componentColors[entry.accent].hardware} />
+              ))}
+            </Bar>
+            <Bar dataKey="refurb" stackId="cost">
+              {chartData.map((entry) => (
+                <Cell key={`refurb-${entry.name}`} fill={componentColors[entry.accent].refurb} />
+              ))}
+            </Bar>
+            <Bar dataKey="stageTwo" stackId="cost">
+              {chartData.map((entry) => (
+                <Cell key={`stageTwo-${entry.name}`} fill={componentColors[entry.accent].stageTwo} />
+              ))}
+            </Bar>
+            <Bar dataKey="fuel" stackId="cost" radius={[0, 4, 4, 0]}>
+              {chartData.map((entry) => (
+                <Cell key={`fuel-${entry.name}`} fill={componentColors[entry.accent].fuel} />
+              ))}
               <LabelList
                 dataKey="total"
                 position="right"
-                formatter={(value) => formatMoney(value * 1_000_000)}
-                fill="#E5E5E5"
-                className="font-mono text-xs font-semibold tabular-nums"
+                content={({ x, y, width, height, value, index }) => {
+                  const entry = chartData[index] ?? chartData[0];
+
+                  return (
+                    <text
+                      x={x + width + 10}
+                      y={y + height / 2}
+                      fill={vehicleAccent[entry.accent]}
+                      dominantBaseline="middle"
+                      className="font-mono text-xs font-semibold tabular-nums"
+                    >
+                      {formatMoney(value * 1_000_000)}
+                    </text>
+                  );
+                }}
               />
             </Bar>
           </BarChart>
@@ -168,14 +216,16 @@ function CostStackedBar({ items, showPriceCeiling, priceCeilingBand }) {
       <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-zinc-400">
         {Object.entries(componentLabels).map(([id, label]) => (
           <span key={id} className="inline-flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full" style={{ backgroundColor: componentColors[id] }} />
+            <span className="inline-flex gap-1">
+              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: componentColors.falcon[id] }} />
+              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: componentColors.starship[id] }} />
+            </span>
             {label}
           </span>
         ))}
         <span className="inline-flex items-center gap-2">
-          <span className="h-2 w-4 rounded-full bg-white/10" />
+          <span className="h-0 w-5 border-t border-dashed border-zinc-500" />
           ULA reference
-          <Cite sourceIds={priceCeilingBand.sources} />
         </span>
       </div>
     </div>
