@@ -8,6 +8,12 @@ export const vehicles = {
     accent: 'falcon',
     calculationModel: 'falcon9',
     reuseModel: 'First stage reused; second stage expended',
+    interactiveInputOrder: [
+      'boosterBuildCost',
+      'boosterUsefulFlights',
+      'refurbPerFlight',
+      'stageTwoCost',
+    ],
     metrics: {
       listPrice: {
         value: 74_000_000,
@@ -56,6 +62,7 @@ export const vehicles = {
       boosterBuildCost: {
         label: 'Booster build cost',
         value: { low: 30_000_000, mid: 40_000_000, high: 50_000_000 },
+        step: 1_000_000,
         unit: 'USD',
         sources: ['musk_iac_inverse'],
         note: 'Musk implied the booster was roughly 60% of a $62M Falcon 9; the wider range reflects uncertainty around build-cost estimates. The model midpoint is rounded to keep the default case aligned with published marginal-cost estimates.',
@@ -64,6 +71,7 @@ export const vehicles = {
       boosterUsefulFlights: {
         label: 'Booster useful flights',
         value: { low: 10, mid: 10, high: 30 },
+        step: 1,
         unit: 'flights',
         sources: ['musk_iac_inverse', 'spacex_users_guide_2025'],
         note: 'Sensitivity range anchored by demonstrated reuse history and Musk commentary that the booster had no obvious hard flight-count limit. The midpoint holds at 10 flights so the default model opens near the published $15M marginal-cost anchor.',
@@ -72,6 +80,7 @@ export const vehicles = {
       refurbPerFlight: {
         label: 'Refurb per flight',
         value: { low: 250_000, mid: 800_000, high: 1_000_000 },
+        step: 50_000,
         unit: 'USD',
         sources: ['musk_iac_inverse'],
         note: 'Musk has cited values near both ends; actual refurbishment cost likely moved lower as reuse matured.',
@@ -80,6 +89,7 @@ export const vehicles = {
       stageTwoCost: {
         label: 'Stage 2 cost',
         value: { low: 7_000_000, mid: 10_000_000, high: 12_000_000 },
+        step: 500_000,
         unit: 'USD',
         sources: ['musk_iac_inverse', 'nextbigfuture_decomp'],
         note: 'Expendable upper-stage cost estimate used to preserve the brief\'s Falcon 9 comparison framework.',
@@ -102,6 +112,12 @@ export const vehicles = {
     accent: 'starship',
     calculationModel: 'starship',
     reuseModel: 'Both stages designed for reuse',
+    interactiveInputOrder: [
+      'stackBuildCost',
+      'boosterUsefulFlights',
+      'shipUsefulFlights',
+      'refurbPerFlight',
+    ],
     metrics: {
       listPrice: {
         value: 90_000_000,
@@ -157,6 +173,7 @@ export const vehicles = {
       stackBuildCost: {
         label: 'Stack build cost',
         value: { low: 50_000_000, mid: 90_000_000, high: 200_000_000 },
+        step: 5_000_000,
         unit: 'USD',
         sources: ['payload_starship_report'],
         note: 'Sensitivity range for the interactive model, with the mid case anchored to Payload Research\'s $90M stack estimate.',
@@ -165,6 +182,7 @@ export const vehicles = {
       boosterUsefulFlights: {
         label: 'Booster useful flights',
         value: { low: 5, mid: 10, high: 50 },
+        step: 1,
         unit: 'flights',
         sources: ['payload_starship_report', 'musk_starship_2m'],
         note: 'Sensitivity range because full operational reuse is not yet demonstrated.',
@@ -173,6 +191,7 @@ export const vehicles = {
       shipUsefulFlights: {
         label: 'Ship useful flights',
         value: { low: 5, mid: 10, high: 50 },
+        step: 1,
         unit: 'flights',
         sources: ['payload_starship_report', 'musk_starship_2m'],
         note: 'Sensitivity range because full ship reuse is not yet demonstrated.',
@@ -181,6 +200,7 @@ export const vehicles = {
       refurbPerFlight: {
         label: 'Refurb per flight',
         value: { low: 500_000, mid: 2_500_000, high: 5_000_000 },
+        step: 250_000,
         unit: 'USD',
         sources: ['musk_starship_2m', 'payload_starship_report'],
         note: 'Near-term refurbishment sensitivity; sub-$1M would be consistent with longer-term reuse ambitions, not proven current economics.',

@@ -20,7 +20,7 @@ export const sources = {
     title: 'Commitments and Contingencies - Note 21',
     publisher: 'Voyager Technologies, Inc. Annual Report (10-K)',
     filingDate: 'December 31, 2025',
-    url: 'SEC EDGAR - Voyager Technologies 10-K FY2025',
+    url: 'https://d18rn0p25nwr6d.cloudfront.net/CIK-0001788060/59c40344-4ef9-4f1c-b9d3-d6a06474af6f.pdf',
     accessDate: '2026-05-09',
     quote: 'commitment for one launch at a future estimated launch date for $90.0 million',
     type: 'primary',
@@ -32,6 +32,14 @@ export const sources = {
     url: 'https://www.congress.gov/crs_external_products/IF/PDF/IF12900/IF12900.4.pdf',
     accessDate: '2026-05-09',
     type: 'primary',
+  },
+  ula_historical_pricing: {
+    id: 'ula_historical_pricing',
+    title: 'Launch Market Pricing Reference Range',
+    publisher: 'Project assumption from historical ULA / national-security launch pricing context',
+    url: 'https://www.congress.gov/crs_external_products/IF/PDF/IF12900/IF12900.4.pdf',
+    accessDate: '2026-05-09',
+    type: 'triangulation',
   },
   sacra_spacex_2026: {
     id: 'sacra_spacex_2026',
