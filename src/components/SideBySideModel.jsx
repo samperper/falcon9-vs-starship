@@ -1,14 +1,87 @@
 import { useMemo, useState } from 'react';
+import Cite from './Cite';
 import CostStackedBar from './CostStackedBar';
 import VehiclePanel from './VehiclePanel';
 import { priceCeilingBand } from '../data/marketContext';
-import { vehicles, vehicleOrder } from '../data/vehicles';
-import { calculateVehicleEconomics, getDefaultInputs } from '../lib/economics';
-import { formatCostPerKg } from '../lib/formatters';
+import { launchVehicleReferenceOrder, vehicles, vehicleOrder } from '../data/vehicles';
+import { calculateCostPerKg, calculateVehicleEconomics, getDefaultInputs, readValue } from '../lib/economics';
+import { formatCostPerKg, formatMoneyFull, wholeNumber } from '../lib/formatters';
 
 const initialInputs = Object.fromEntries(
   vehicleOrder.map((vehicleId) => [vehicleId, getDefaultInputs(vehicles[vehicleId])]),
 );
+
+const referenceAccentClass = {
+  falcon: 'border-falcon/30 text-falcon',
+  heavy: 'border-indigo-300/25 text-indigo-200',
+  starship: 'border-starship/30 text-starship',
+};
+
+const getReferencePayloadMetric = (vehicle) =>
+  vehicle.metrics.payloadToLeo ?? vehicle.metrics.payloadToLeoExpendable;
+
+function LaunchVehicleReference() {
+  return (
+    <div className="rounded-lg border border-white/10 bg-surface/70 p-5 sm:p-6">
+      <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+        <div>
+          <p className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+            Launch vehicle reference
+          </p>
+          <h3 className="mt-2 text-2xl font-semibold text-text">How the broader Falcon family frames the comparison</h3>
+        </div>
+        <p className="max-w-md text-sm leading-6 text-zinc-500">
+          Static list-price view only; Falcon Heavy is context, not part of the interactive marginal-cost model.
+        </p>
+      </div>
+
+      <div className="grid gap-3 lg:grid-cols-3">
+        {launchVehicleReferenceOrder.map((vehicleId) => {
+          const vehicle = vehicles[vehicleId];
+          const payloadMetric = getReferencePayloadMetric(vehicle);
+          const listPriceUsd = readValue(vehicle.metrics.listPrice);
+          const payloadKg = readValue(payloadMetric);
+          const listCostPerKg = calculateCostPerKg(listPriceUsd, payloadKg);
+
+          return (
+            <article key={vehicle.id} className="rounded-md border border-white/10 bg-black/25 p-4">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <h4 className="text-lg font-semibold text-text">{vehicle.shortName}</h4>
+                <span className={`rounded-full border px-2.5 py-1 font-mono text-[0.68rem] uppercase tracking-[0.12em] ${referenceAccentClass[vehicle.accent]}`}>
+                  {vehicle.type === 'launchVehicle' ? 'Heavy lift' : 'Core model'}
+                </span>
+              </div>
+              <dl className="grid grid-cols-2 gap-x-4 gap-y-3 font-mono text-sm tabular-nums">
+                <div>
+                  <dt className="text-[0.68rem] uppercase tracking-[0.12em] text-zinc-500">LEO payload</dt>
+                  <dd className="mt-1 text-zinc-200">
+                    {wholeNumber.format(payloadKg)} kg
+                    <Cite sourceIds={payloadMetric.sources} accent={vehicle.accent === 'starship' ? 'starship' : 'falcon'} />
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-[0.68rem] uppercase tracking-[0.12em] text-zinc-500">List price</dt>
+                  <dd className="mt-1 text-zinc-200">
+                    {formatMoneyFull(listPriceUsd)}
+                    <Cite sourceIds={vehicle.metrics.listPrice.sources} accent={vehicle.accent === 'starship' ? 'starship' : 'falcon'} />
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-[0.68rem] uppercase tracking-[0.12em] text-zinc-500">List $/kg</dt>
+                  <dd className="mt-1 text-zinc-200">{formatCostPerKg(listCostPerKg)}</dd>
+                </div>
+                <div>
+                  <dt className="text-[0.68rem] uppercase tracking-[0.12em] text-zinc-500">Reuse model</dt>
+                  <dd className="mt-1 font-sans text-xs leading-5 text-zinc-400">{vehicle.reuseModel}</dd>
+                </div>
+              </dl>
+            </article>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 function SideBySideModel() {
   const [inputsByVehicle, setInputsByVehicle] = useState(initialInputs);
@@ -115,6 +188,8 @@ function SideBySideModel() {
           </span>
         </button>
       </div>
+
+      <LaunchVehicleReference />
     </div>
   );
 }

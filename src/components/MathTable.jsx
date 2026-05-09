@@ -9,7 +9,8 @@ const tableRows = {
     { id: 'fuelUsd', label: 'Fuel', inputId: 'fuelPerLaunch' },
   ],
   starship: [
-    { id: 'stackAmortizationUsd', label: 'Stack build cost / useful flights', inputId: 'stackBuildCost' },
+    { id: 'superHeavyAmortizationUsd', label: 'Super Heavy build cost / booster flights', inputId: 'boosterUsefulFlights' },
+    { id: 'shipAmortizationUsd', label: 'Ship build cost / ship flights', inputId: 'shipUsefulFlights' },
     { id: 'refurbUsd', label: 'Refurbishment per flight', inputId: 'refurbPerFlight' },
     { id: 'fuelUsd', label: 'Fuel', inputId: 'fuelPerLaunch' },
   ],

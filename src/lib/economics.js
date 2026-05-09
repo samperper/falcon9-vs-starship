@@ -88,30 +88,26 @@ export const calculateFalcon9Components = (vehicle, overrides = {}, caseName = D
 
 export const calculateStarshipComponents = (vehicle, overrides = {}, caseName = DEFAULT_CASE) => {
   const inputs = mergeVehicleInputs(vehicle, overrides, caseName);
-  const effectiveStackFlights = Math.min(
-    atLeastOne(inputs.boosterUsefulFlights),
-    atLeastOne(inputs.shipUsefulFlights),
-  );
-  const stackAmortizationUsd = zeroFloor(inputs.stackBuildCost) / effectiveStackFlights;
+  const stackBuildCostUsd = zeroFloor(inputs.stackBuildCost);
+  const boosterBuildShare = Math.min(1, zeroFloor(inputs.boosterBuildShare));
+  const shipBuildShare = Math.min(1, zeroFloor(inputs.shipBuildShare));
+  const superHeavyAmortizationUsd =
+    (stackBuildCostUsd * boosterBuildShare) / atLeastOne(inputs.boosterUsefulFlights);
+  const shipAmortizationUsd =
+    (stackBuildCostUsd * shipBuildShare) / atLeastOne(inputs.shipUsefulFlights);
   const refurbUsd = zeroFloor(inputs.refurbPerFlight);
   const fuelUsd = zeroFloor(inputs.fuelPerLaunch);
 
   return {
-    stackAmortizationUsd,
+    superHeavyAmortizationUsd,
+    shipAmortizationUsd,
     refurbUsd,
     fuelUsd,
-    effectiveStackFlights,
   };
 };
 
 export const sumCostComponents = (components) =>
-  Object.entries(components).reduce((totalUsd, [componentId, value]) => {
-    if (componentId === 'effectiveStackFlights') {
-      return totalUsd;
-    }
-
-    return totalUsd + zeroFloor(value);
-  }, 0);
+  Object.values(components).reduce((totalUsd, value) => totalUsd + zeroFloor(value), 0);
 
 export const calculatePublishedEconomics = (vehicle, caseName = DEFAULT_CASE) => {
   const marginalCostUsd = readValue(vehicle.metrics.marginalCost, caseName);

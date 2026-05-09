@@ -37,6 +37,13 @@ Done
 - Confirmed `npm run build` passes after Phase 3
 - Smoke-tested desktop and 375px mobile for Phase 3 with no console errors and no mobile horizontal overflow
 - Created and updated AGENT_LOG.md with the session entry
+- Added Falcon Heavy as sourced static launch-vehicle reference context without adding it to the interactive slider model
+- Added Dragon as a sourced top-level spacecraft entity and featured customer-context card
+- Added Falcon Heavy to the $/kg curve as a muted tertiary list-price marker
+- Fixed the Starship booster useful-flights slider by splitting Super Heavy and Ship amortization instead of using the lower useful-flight count for the whole stack
+- Confirmed `npm run build` passes after the Falcon Heavy / Dragon expansion and Starship slider fix
+- Smoke-tested the updated UI at desktop and 390px mobile with no horizontal overflow, and verified the Starship booster slider changes marginal cost
+- Updated AGENT_LOG.md with the Falcon Heavy / Dragon expansion and Starship slider fix session entry
 
 Next
 
@@ -54,6 +61,7 @@ Blockers / questions for human
 
 - Human needs to provide opener and closer prose for Phase 4.
 - Human should still spot-check src/data/vehicles.js and src/data/costCurve.js against original sources.
+- Falcon Heavy flight count and Dragon fleet mission count are time-sensitive and should be refreshed before final publication.
 
 Last updated
 May 9, 2026

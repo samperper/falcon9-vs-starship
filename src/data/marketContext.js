@@ -43,4 +43,14 @@ export const customerTypes = [
     priceTier: 'Future demand curve',
     note: 'Lower $/kg expands the set of missions that can make economic sense.',
   },
+  {
+    id: 'dragon',
+    iconLabel: 'DRG',
+    title: 'Dragon crew & cargo',
+    examples: ['Crew rotation', 'Cargo return', 'Private astronaut missions'],
+    priceTier: 'Premium mission service',
+    note: 'Dragon is the economic bridge between launch and transportation: Falcon 9 plus spacecraft, operations, crew safety, docking, return, and refurbishment.',
+    featured: true,
+    sources: ['spacex_dragon_page', 'nasa_oig_commercial_crew'],
+  },
 ];

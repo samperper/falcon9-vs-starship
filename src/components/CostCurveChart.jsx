@@ -15,6 +15,7 @@ const labelOffsets = {
   atlasV: { x: 12, y: -18, align: 'left' },
   falcon9Expendable: { x: 12, y: -14, align: 'left' },
   falcon9Reused: { x: 12, y: -10, align: 'left' },
+  falconHeavyListPrice: { x: -12, y: 24, align: 'right' },
   falcon9Mature: { x: -12, y: 22, align: 'right' },
   starshipNearTerm: { x: -10, y: -44, align: 'right' },
   starshipAtScale: { x: -10, y: 12, align: 'right' },
@@ -28,6 +29,22 @@ const milestoneOffsets = {
 };
 
 const log10 = (value) => Math.log10(value);
+
+const getPointColor = (point) => {
+  if (point.accent === 'heavy') {
+    return '#A5B4FC';
+  }
+
+  return point.isProjected ? '#FF6B35' : '#0077DA';
+};
+
+const getPointCitationAccent = (point) => {
+  if (point.accent === 'heavy') {
+    return 'neutral';
+  }
+
+  return point.isProjected ? 'starship' : 'falcon';
+};
 
 function useMeasuredWidth() {
   const ref = useRef(null);
@@ -156,7 +173,7 @@ function CostCurveChart() {
               <path d={toPath(projectedPoints)} fill="none" stroke="#FF6B35" strokeDasharray="8 8" strokeLinecap="round" strokeLinejoin="round" strokeOpacity="0.72" strokeWidth="3" />
 
               {plottedPoints.map((point) => (
-                <circle key={point.id} cx={point.x} cy={point.y} r="5" fill={point.isProjected ? '#FF6B35' : '#0077DA'} stroke="#0A0A0A" strokeWidth="2" />
+                <circle key={point.id} cx={point.x} cy={point.y} r={point.accent === 'heavy' ? '6' : '5'} fill={getPointColor(point)} stroke="#0A0A0A" strokeWidth="2" />
               ))}
 
               {milestones.map((milestone) => (
@@ -181,7 +198,7 @@ function CostCurveChart() {
                   style={{ left: point.x + offset.x, top: point.y + offset.y, textAlign: offset.align, transform: offset.align === 'right' ? 'translateX(-100%)' : undefined }}
                 >
                   <span className="font-medium text-zinc-200">{point.label}</span>
-                  <Cite sourceIds={point.sources} accent={point.isProjected ? 'starship' : 'falcon'} />
+                  <Cite sourceIds={point.sources} accent={getPointCitationAccent(point)} />
                   <span className="mt-0.5 block font-mono text-[0.7rem] text-zinc-500">{formatCostPerKg(point.value)}</span>
                 </div>
               );

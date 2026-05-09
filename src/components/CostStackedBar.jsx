@@ -41,7 +41,9 @@ const componentLabels = {
 };
 
 const getHardwareCost = (economics) =>
-  economics.components.boosterAmortizationUsd ?? economics.components.stackAmortizationUsd ?? 0;
+  economics.components.boosterAmortizationUsd ??
+  economics.components.stackAmortizationUsd ??
+  (economics.components.superHeavyAmortizationUsd ?? 0) + (economics.components.shipAmortizationUsd ?? 0);
 
 const getChartData = (items) =>
   items.map(({ vehicle, economics }) => ({
