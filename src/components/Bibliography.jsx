@@ -22,7 +22,7 @@ function Bibliography() {
               <div>
                 <p className="text-sm font-medium leading-6 text-zinc-200">{source.title}</p>
                 <p className="text-sm leading-6 text-zinc-500">
-                  {source.publisher} · {getDisplayDate(source)}
+                  {source.publisher} - {getDisplayDate(source)}
                 </p>
                 <a
                   href={source.url}

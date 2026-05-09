@@ -1,4 +1,5 @@
 import Bibliography from './components/Bibliography';
+import CostCurveChart from './components/CostCurveChart';
 import CustomerContext from './components/CustomerContext';
 import Section from './components/Section';
 import SideBySideModel from './components/SideBySideModel';
@@ -35,9 +36,7 @@ function App() {
         </Section>
 
         <Section eyebrow="Section 03" title="The $/kg Curve">
-          <div className="rounded-lg border border-dashed border-white/15 bg-surface/50 p-8 text-zinc-400">
-            Phase 3 will replace this placeholder with the historical log-scale cost curve.
-          </div>
+          <CostCurveChart />
         </Section>
 
         <Section eyebrow="Section 04" title="Closer + Sources">

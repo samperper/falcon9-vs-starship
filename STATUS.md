@@ -1,6 +1,6 @@
 STATUS
 Current phase
-Phase 3: $/kg Curve
+Phase 4: Wrap
 
 Done
 
@@ -26,23 +26,34 @@ Done
 - Reworked the page shell into a premium dark editorial layout while keeping opener and closer prose reserved for the human
 - Confirmed `npm run build` passes after Phase 2
 - Smoke-tested desktop and 375px mobile in browser automation with no console errors and no mobile horizontal overflow
+- Fixed Phase 2 cost stack chart colors so Falcon 9 uses blue-family segments and Starship uses orange-family segments
+- Polished the ULA price ceiling toggle and chart overlay
+- Simplified citations: no metric-card superscripts, one arithmetic-table superscript per cited row, tooltip/link behavior, and numbered bibliography
+- Confirmed `npm run build` passes after the Phase 2 fixes
+- Committed Phase 2 fixes before starting Phase 3
+- Added sourced cost-curve data for Space Shuttle, Atlas V, Falcon 9 expendable/reused/mature, and Starship projected cases
+- Built a large custom log-scale $/kg curve with observed solid line, projected dashed line, Starship uncertainty band, and milestone callouts
+- Added source citations for cost-curve points and milestones
+- Confirmed `npm run build` passes after Phase 3
+- Smoke-tested desktop and 375px mobile for Phase 3 with no console errors and no mobile horizontal overflow
+- Created and updated AGENT_LOG.md with the session entry
 
 Next
 
-- Build the historical $/kg curve on a log scale
-- Add sourced data points for Atlas V era, Falcon 9 expendable, Falcon 9 reused, Starship near-term target, and Starship at-scale target
-- Add annotations for Atlas V era, first Falcon 9 reuse, and Starship operational target
-- Style chart axes, labels, callouts, and tooltip intentionally; avoid default Recharts styling
-- Keep the chart large, readable, and screenshot-worthy on desktop and mobile
+- Add the human-written opener prose
+- Add the human-written closer prose
+- Polish the sources section and bibliography presentation
+- Finalize README with thesis-light intro, methodology note, source summary, and contact details
+- Run a final responsive polish pass
 - Run `npm run build`
-- Update STATUS.md to mark Phase 3 done, Phase 4 next
-- Commit and push Phase 3 when complete
-- Stop and report back for review before Phase 4
+- Update STATUS.md to mark Phase 4 done
+- Commit and push Phase 4 when complete
+- Stop and report back for final review
 
 Blockers / questions for human
 
-- Human should review the Phase 2 interaction/design before Phase 3.
-- Human should still spot-check src/data/vehicles.js against original sources, especially the Falcon 9 marginal-cost range.
+- Human needs to provide opener and closer prose for Phase 4.
+- Human should still spot-check src/data/vehicles.js and src/data/costCurve.js against original sources.
 
 Last updated
 May 9, 2026
