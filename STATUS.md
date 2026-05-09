@@ -44,6 +44,12 @@ Done
 - Confirmed `npm run build` passes after the Falcon Heavy / Dragon expansion and Starship slider fix
 - Smoke-tested the updated UI at desktop and 390px mobile with no horizontal overflow, and verified the Starship booster slider changes marginal cost
 - Updated AGENT_LOG.md with the Falcon Heavy / Dragon expansion and Starship slider fix session entry
+- Promoted Falcon Heavy into the main Section 02 top comparison row while keeping the interactive sliders limited to Falcon 9 and Starship
+- Removed the lower launch-vehicle reference block now that Falcon Heavy appears natively in the top comparison
+- Reworked the $/kg curve so the plot uses numbered marker circles and the cited milestone details live in a two-column legend below the chart
+- Updated cost stack chart segments to the requested high-contrast Falcon and Starship palettes with a custom solid-swatch legend
+- Confirmed `npm run build` passes after the pre-Phase-4 polish pass
+- Browser smoke-tested the pre-Phase-4 polish with no console warnings/errors, numbered curve markers present, lower reference block removed, and requested cost-stack legend colors present
 
 Next
 

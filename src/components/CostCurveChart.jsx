@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Cite from './Cite';
-import { costCurveMilestones, costCurvePoints } from '../data/costCurve';
+import { costCurveAnnotations, costCurveMilestones, costCurvePoints } from '../data/costCurve';
 import { formatCostPerKg } from '../lib/formatters';
 
 const yTicks = [100_000, 10_000, 1_000, 100, 10];
@@ -10,25 +10,19 @@ const maxYear = 2032;
 const minCost = 10;
 const maxCost = 100_000;
 
-const labelOffsets = {
-  spaceShuttle: { x: 12, y: -26, align: 'left' },
-  atlasV: { x: 12, y: -18, align: 'left' },
-  falcon9Expendable: { x: 12, y: -14, align: 'left' },
-  falcon9Reused: { x: 12, y: -10, align: 'left' },
-  falconHeavyListPrice: { x: -12, y: 24, align: 'right' },
-  falcon9Mature: { x: -12, y: 22, align: 'right' },
-  starshipNearTerm: { x: -10, y: -44, align: 'right' },
-  starshipAtScale: { x: -10, y: 12, align: 'right' },
-};
-
-const milestoneOffsets = {
-  firstFalconLanding: { x: 18, y: 26, align: 'left' },
-  falconBlock5: { x: 14, y: 36, align: 'left' },
-  starshipFlight5: { x: -18, y: -54, align: 'right' },
-  voyagerStarlab: { x: 16, y: 36, align: 'left' },
+const annotationOffsets = {
+  spaceShuttleEra: { x: 18, y: -18 },
+  atlasVEra: { x: 18, y: -18 },
+  firstFalconLanding: { x: 0, y: -26 },
+  falconHeavyFirstFlight: { x: -22, y: 28 },
+  falconBlock5: { x: 24, y: -28 },
+  starshipFlight5: { x: -8, y: -28 },
+  voyagerStarlab: { x: 24, y: -16 },
+  starshipAtScale: { x: -24, y: -16 },
 };
 
 const log10 = (value) => Math.log10(value);
+const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
 const getPointColor = (point) => {
   if (point.accent === 'heavy') {
@@ -38,13 +32,24 @@ const getPointColor = (point) => {
   return point.isProjected ? '#FF6B35' : '#0077DA';
 };
 
-const getPointCitationAccent = (point) => {
-  if (point.accent === 'heavy') {
-    return 'neutral';
+const getAnnotationColor = (annotation) => {
+  if (annotation.id.includes('starship') || annotation.id.includes('voyager')) {
+    return '#FF6B35';
   }
 
-  return point.isProjected ? 'starship' : 'falcon';
+  if (annotation.id.includes('falconHeavy')) {
+    return '#7B61FF';
+  }
+
+  if (annotation.id.includes('falcon')) {
+    return '#0077DA';
+  }
+
+  return '#E5E5E5';
 };
+
+const getAnnotationAccent = (annotation) =>
+  annotation.id.includes('starship') || annotation.id.includes('voyager') ? 'starship' : 'falcon';
 
 function useMeasuredWidth() {
   const ref = useRef(null);
@@ -73,6 +78,35 @@ function toPath(points) {
   return points.map((point, index) => `${index === 0 ? 'M' : 'L'} ${point.x} ${point.y}`).join(' ');
 }
 
+function AnnotationLegend() {
+  return (
+    <div className="mt-6 grid overflow-hidden rounded-md border border-white/10 md:grid-cols-2">
+      {costCurveAnnotations.map((annotation) => (
+        <div
+          key={annotation.id}
+          className={`flex gap-3 border-b border-white/[0.07] p-4 ${annotation.number === costCurveAnnotations.length ? 'border-b-0' : ''} ${annotation.number > costCurveAnnotations.length - 2 ? 'md:border-b-0' : ''}`}
+        >
+          <span
+            className="mt-0.5 inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border bg-black/45 font-mono text-xs font-semibold tabular-nums"
+            style={{ borderColor: getAnnotationColor(annotation), color: getAnnotationColor(annotation) }}
+          >
+            {annotation.number}
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm leading-6 text-zinc-200">
+              {annotation.label}
+              <Cite sourceIds={annotation.sources} accent={getAnnotationAccent(annotation)} />
+            </p>
+            <p className="mt-1 font-mono text-xs leading-5 text-zinc-500">
+              {annotation.detail} - {annotation.displayValue}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function CostCurveChart() {
   const [containerRef, width] = useMeasuredWidth();
   const height = width < 640 ? 620 : 560;
@@ -92,11 +126,13 @@ function CostCurveChart() {
     return { xScale, yScale };
   }, [margin.left, margin.top, plotHeight, plotWidth]);
 
-  const plottedPoints = costCurvePoints.map((point) => ({
-    ...point,
-    x: scales.xScale(point.year),
-    y: scales.yScale(point.value),
-  }));
+  const plottedPoints = [...costCurvePoints]
+    .sort((firstPoint, secondPoint) => firstPoint.year - secondPoint.year || secondPoint.value - firstPoint.value)
+    .map((point) => ({
+      ...point,
+      x: scales.xScale(point.year),
+      y: scales.yScale(point.value),
+    }));
   const observedPoints = plottedPoints.filter((point) => !point.isProjected);
   const projectedPoints = [observedPoints.at(-1), ...plottedPoints.filter((point) => point.isProjected)];
   const starshipRangePoints = costCurvePoints.filter((point) => point.isProjected && point.range);
@@ -111,6 +147,23 @@ function CostCurveChart() {
     x: scales.xScale(milestone.year),
     y: scales.yScale(milestone.value),
   }));
+  const annotationMarkers = costCurveAnnotations.map((annotation) => {
+    const point = annotation.pointId
+      ? plottedPoints.find((plottedPoint) => plottedPoint.id === annotation.pointId)
+      : milestones.find((milestone) => milestone.id === annotation.milestoneId) ?? {
+        x: scales.xScale(annotation.year),
+        y: scales.yScale(annotation.value),
+      };
+    const offset = annotationOffsets[annotation.id] ?? { x: 0, y: -24 };
+
+    return {
+      ...annotation,
+      x: point.x,
+      y: point.y,
+      markerX: clamp(point.x + offset.x, margin.left + 12, width - margin.right - 12),
+      markerY: clamp(point.y + offset.y, margin.top + 12, height - margin.bottom - 12),
+    };
+  });
 
   return (
     <div className="rounded-lg border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),transparent),#0d0d0d] p-4 shadow-2xl shadow-black/30 sm:p-6">
@@ -183,45 +236,42 @@ function CostCurveChart() {
                 </g>
               ))}
 
+              {annotationMarkers.map((annotation) => {
+                const color = getAnnotationColor(annotation);
+
+                return (
+                  <g key={annotation.id}>
+                    <line
+                      x1={annotation.x}
+                      x2={annotation.markerX}
+                      y1={annotation.y}
+                      y2={annotation.markerY}
+                      stroke={color}
+                      strokeOpacity="0.35"
+                      strokeWidth="1"
+                    />
+                    <circle cx={annotation.markerX} cy={annotation.markerY} r="11" fill="#0A0A0A" stroke={color} strokeWidth="1.5" />
+                    <text
+                      x={annotation.markerX}
+                      y={annotation.markerY + 4}
+                      textAnchor="middle"
+                      className="fill-zinc-100 font-mono text-[11px] font-semibold"
+                    >
+                      {annotation.number}
+                    </text>
+                  </g>
+                );
+              })}
+
               <text x={margin.left} y={height - 18} className="fill-zinc-500 font-mono text-[11px]">
                 Cost per kilogram to LEO, USD/kg, log scale
               </text>
             </svg>
-
-            {plottedPoints.map((point) => {
-              const offset = labelOffsets[point.id];
-
-              return (
-                <div
-                  key={point.id}
-                  className="absolute max-w-[9rem] text-xs leading-4 text-zinc-400"
-                  style={{ left: point.x + offset.x, top: point.y + offset.y, textAlign: offset.align, transform: offset.align === 'right' ? 'translateX(-100%)' : undefined }}
-                >
-                  <span className="font-medium text-zinc-200">{point.label}</span>
-                  <Cite sourceIds={point.sources} accent={getPointCitationAccent(point)} />
-                  <span className="mt-0.5 block font-mono text-[0.7rem] text-zinc-500">{formatCostPerKg(point.value)}</span>
-                </div>
-              );
-            })}
-
-            {milestones.map((milestone) => {
-              const offset = milestoneOffsets[milestone.id];
-
-              return (
-                <div
-                  key={milestone.id}
-                  className="absolute max-w-[13rem] text-xs leading-4 text-zinc-300"
-                  style={{ left: milestone.x + offset.x, top: milestone.y + offset.y, textAlign: offset.align, transform: offset.align === 'right' ? 'translateX(-100%)' : undefined }}
-                >
-                  <span className="font-medium text-text">{milestone.label}</span>
-                  <Cite sourceIds={milestone.sources} accent={milestone.id.includes('starship') || milestone.id.includes('voyager') ? 'starship' : 'falcon'} />
-                  <span className="mt-0.5 block font-mono text-[0.68rem] uppercase tracking-[0.08em] text-zinc-500">{milestone.detail}</span>
-                </div>
-              );
-            })}
           </>
         ) : null}
       </div>
+
+      <AnnotationLegend />
 
       <p className="mt-5 max-w-3xl text-sm leading-6 text-zinc-400">
         The economic story is not a straight line downward; it is a step-change curve where reuse turns launch cost from scarce infrastructure into an operating variable.

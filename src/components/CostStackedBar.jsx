@@ -16,15 +16,15 @@ import { formatMoney, toMillions } from '../lib/formatters';
 const componentColors = {
   falcon: {
     hardware: '#0077DA',
-    refurb: '#0066BB',
-    stageTwo: '#0055A0',
-    fuel: '#004480',
+    refurb: '#38BDF8',
+    stageTwo: '#1E3A5F',
+    fuel: '#7DD3FC',
   },
   starship: {
     hardware: '#FF6B35',
-    refurb: '#E55A25',
-    stageTwo: '#CC4A15',
-    fuel: '#CC4A15',
+    refurb: '#F59E0B',
+    stageTwo: '#7C2D12',
+    fuel: '#7C2D12',
   },
 };
 
@@ -35,10 +35,23 @@ const vehicleAccent = {
 
 const componentLabels = {
   hardware: 'Vehicle amortization',
-  refurb: 'Refurb',
+  refurb: 'Refurbishment',
   stageTwo: 'Stage 2',
   fuel: 'Fuel',
 };
+
+const legendGroups = [
+  {
+    id: 'falcon',
+    label: 'Falcon 9',
+    segments: ['hardware', 'refurb', 'stageTwo', 'fuel'],
+  },
+  {
+    id: 'starship',
+    label: 'Starship',
+    segments: ['hardware', 'refurb', 'fuel'],
+  },
+];
 
 const getHardwareCost = (economics) =>
   economics.components.boosterAmortizationUsd ??
@@ -79,6 +92,33 @@ function ChartTooltip({ active, payload, label }) {
             </div>
           ))}
       </div>
+    </div>
+  );
+}
+
+function CostStackLegend() {
+  return (
+    <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-3 text-left">
+      {legendGroups.map((group) => (
+        <div key={group.id} className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <span className="font-mono text-[0.68rem] uppercase tracking-[0.12em] text-zinc-500">
+            {group.label}
+          </span>
+          {group.segments.map((segment) => (
+            <span key={`${group.id}-${segment}`} className="inline-flex items-center gap-2 font-mono text-xs text-zinc-400">
+              <span
+                className="h-3 w-3 shrink-0 rounded-sm"
+                style={{ backgroundColor: componentColors[group.id][segment] }}
+              />
+              {componentLabels[segment]}
+            </span>
+          ))}
+        </div>
+      ))}
+      <span className="inline-flex items-center gap-2 font-mono text-xs text-zinc-400">
+        <span className="h-0 w-5 border-t border-dashed border-zinc-500" />
+        ULA reference
+      </span>
     </div>
   );
 }
@@ -215,21 +255,7 @@ function CostStackedBar({ items, showPriceCeiling, priceCeilingBand }) {
         ) : null}
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 text-xs text-zinc-400">
-        {Object.entries(componentLabels).map(([id, label]) => (
-          <span key={id} className="inline-flex items-center gap-2">
-            <span className="inline-flex gap-1">
-              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: componentColors.falcon[id] }} />
-              <span className="h-2 w-2 rounded-full" style={{ backgroundColor: componentColors.starship[id] }} />
-            </span>
-            {label}
-          </span>
-        ))}
-        <span className="inline-flex items-center gap-2">
-          <span className="h-0 w-5 border-t border-dashed border-zinc-500" />
-          ULA reference
-        </span>
-      </div>
+      <CostStackLegend />
     </div>
   );
 }

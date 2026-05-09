@@ -13,57 +13,60 @@ const initialInputs = Object.fromEntries(
 
 const referenceAccentClass = {
   falcon: 'border-falcon/30 text-falcon',
-  heavy: 'border-indigo-300/25 text-indigo-200',
+  heavy: 'border-[#7B61FF]/35 text-[#B7A8FF]',
   starship: 'border-starship/30 text-starship',
+};
+
+const referenceOnlyClass = {
+  falcon: 'border-falcon/20 bg-falcon/5',
+  heavy: 'border-[#7B61FF]/30 bg-[#7B61FF]/10',
+  starship: 'border-starship/20 bg-starship/5',
 };
 
 const getReferencePayloadMetric = (vehicle) =>
   vehicle.metrics.payloadToLeo ?? vehicle.metrics.payloadToLeoExpendable;
 
-function LaunchVehicleReference() {
+function VehicleSnapshotCards() {
   return (
-    <div className="rounded-lg border border-white/10 bg-surface/70 p-5 sm:p-6">
-      <div className="mb-5 flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
-        <div>
-          <p className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-            Launch vehicle reference
-          </p>
-          <h3 className="mt-2 text-2xl font-semibold text-text">How the broader Falcon family frames the comparison</h3>
-        </div>
-        <p className="max-w-md text-sm leading-6 text-zinc-500">
-          Static list-price view only; Falcon Heavy is context, not part of the interactive marginal-cost model.
-        </p>
-      </div>
-
-      <div className="grid gap-3 lg:grid-cols-3">
-        {launchVehicleReferenceOrder.map((vehicleId) => {
+    <div className="grid gap-3 lg:grid-cols-3">
+      {launchVehicleReferenceOrder.map((vehicleId) => {
           const vehicle = vehicles[vehicleId];
           const payloadMetric = getReferencePayloadMetric(vehicle);
           const listPriceUsd = readValue(vehicle.metrics.listPrice);
           const payloadKg = readValue(payloadMetric);
           const listCostPerKg = calculateCostPerKg(listPriceUsd, payloadKg);
+          const citationAccent = vehicle.accent === 'starship' ? 'starship' : vehicle.accent === 'heavy' ? 'neutral' : 'falcon';
 
-          return (
-            <article key={vehicle.id} className="rounded-md border border-white/10 bg-black/25 p-4">
-              <div className="mb-4 flex items-center justify-between gap-3">
-                <h4 className="text-lg font-semibold text-text">{vehicle.shortName}</h4>
+        return (
+          <article
+            key={vehicle.id}
+            className={`flex min-h-[18rem] flex-col justify-between rounded-lg border p-5 ${referenceOnlyClass[vehicle.accent]}`}
+          >
+            <div>
+              <div className="mb-5 flex items-center justify-between gap-3">
+                <div>
+                  <p className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+                    {vehicle.accent === 'heavy' ? 'Active heavy-lift' : 'Primary comparison'}
+                  </p>
+                  <h4 className="mt-2 text-2xl font-semibold leading-tight text-text">{vehicle.shortName}</h4>
+                </div>
                 <span className={`rounded-full border px-2.5 py-1 font-mono text-[0.68rem] uppercase tracking-[0.12em] ${referenceAccentClass[vehicle.accent]}`}>
-                  {vehicle.type === 'launchVehicle' ? 'Heavy lift' : 'Core model'}
+                  {vehicle.accent === 'heavy' ? 'Reference' : vehicle.shortName}
                 </span>
               </div>
-              <dl className="grid grid-cols-2 gap-x-4 gap-y-3 font-mono text-sm tabular-nums">
+              <dl className="grid grid-cols-2 gap-x-4 gap-y-4 font-mono text-sm tabular-nums">
                 <div>
                   <dt className="text-[0.68rem] uppercase tracking-[0.12em] text-zinc-500">LEO payload</dt>
                   <dd className="mt-1 text-zinc-200">
                     {wholeNumber.format(payloadKg)} kg
-                    <Cite sourceIds={payloadMetric.sources} accent={vehicle.accent === 'starship' ? 'starship' : 'falcon'} />
+                    <Cite sourceIds={payloadMetric.sources} accent={citationAccent} />
                   </dd>
                 </div>
                 <div>
                   <dt className="text-[0.68rem] uppercase tracking-[0.12em] text-zinc-500">List price</dt>
                   <dd className="mt-1 text-zinc-200">
                     {formatMoneyFull(listPriceUsd)}
-                    <Cite sourceIds={vehicle.metrics.listPrice.sources} accent={vehicle.accent === 'starship' ? 'starship' : 'falcon'} />
+                    <Cite sourceIds={vehicle.metrics.listPrice.sources} accent={citationAccent} />
                   </dd>
                 </div>
                 <div>
@@ -75,10 +78,15 @@ function LaunchVehicleReference() {
                   <dd className="mt-1 font-sans text-xs leading-5 text-zinc-400">{vehicle.reuseModel}</dd>
                 </div>
               </dl>
-            </article>
-          );
-        })}
-      </div>
+            </div>
+            {vehicle.id === 'falconHeavy' ? (
+              <p className="mt-5 border-t border-white/10 pt-4 text-xs leading-5 text-zinc-500">
+                Reference only — see interactive model below for marginal-cost analysis.
+              </p>
+            ) : null}
+          </article>
+        );
+      })}
     </div>
   );
 }
@@ -137,6 +145,16 @@ function SideBySideModel() {
           </div>
         </div>
 
+        <VehicleSnapshotCards />
+
+        <div className="my-7 flex items-center gap-3">
+          <span className="h-px flex-1 bg-white/10" />
+          <span className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+            Interactive marginal-cost model
+          </span>
+          <span className="h-px flex-1 bg-white/10" />
+        </div>
+
         <div className="grid gap-5 xl:grid-cols-2">
           {items.map((item) => (
             <VehiclePanel
@@ -188,8 +206,6 @@ function SideBySideModel() {
           </span>
         </button>
       </div>
-
-      <LaunchVehicleReference />
     </div>
   );
 }

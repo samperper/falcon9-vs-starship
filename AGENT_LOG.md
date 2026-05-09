@@ -1,5 +1,26 @@
 # AGENT_LOG
 
+## 2026-05-09 - Pre-Phase 4 polish: Falcon Heavy top section + curve annotations
+
+Started from a clean working tree after the Falcon Heavy / Dragon context commit had been pushed. Treated this as a pre-Phase-4 polish pass only; no opener/closer prose work was started.
+
+Implemented:
+- Promoted Falcon Heavy into the main Section 02 comparison row alongside Falcon 9 and Starship.
+- Kept Falcon Heavy as a static reference card only: LEO payload, list price, list $/kg, reuse model, and a reference-only note pointing back to the interactive model below.
+- Left the interactive marginal-cost model scoped to Falcon 9 and Starship by keeping `vehicleOrder` unchanged.
+- Removed the separate lower "Launch vehicle reference" block because its content is now native to the top comparison.
+- Reworked the Section 03 $/kg curve annotation system: removed floating in-chart text labels, kept the log-scale line/projection/uncertainty band, added numbered marker circles on the plot, and moved cited milestone detail into a two-column legend below the chart.
+- Added a dedicated `costCurveAnnotations` dataset so legend entries and chart markers stay explicit and ordered.
+- Updated the cost stack chart to use the requested high-contrast colors for Falcon 9 and Starship segments.
+- Replaced the old paired-dot cost-stack legend with a custom solid-swatch legend using 12px swatches, mono labels, left alignment, and mobile wrapping.
+
+Verification:
+- `npm run build` passed. Vite still reports the existing non-failing Recharts chunk-size warning.
+- Browser smoke test confirmed no console warnings/errors, Falcon Heavy appears in the top Section 02 comparison, the lower reference block is gone, numbered curve markers 1-8 render, cited legend entries render below the curve, and the requested cost-stack legend colors are present.
+
+Notes / follow-up:
+- Phase 4 remains reserved for human opener/closer prose, source-list presentation polish, README finalization, and final responsive review.
+
 ## 2026-05-09 - Falcon Heavy / Dragon expansion + Starship slider fix
 
 Started from a clean working tree after Phase 3 was already complete and pushed. Re-read `PROJECT_BRIEF.md`, `AGENT_LOG.md`, and `STATUS.md` first. The original brief excluded a Falcon Heavy section, so this session treated the user's newer instruction as a scoped override: add Falcon Heavy as reference context only, not as a new interactive model or extra section.
