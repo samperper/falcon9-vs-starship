@@ -1,25 +1,31 @@
 STATUS
 Current phase
-Phase 0: Setup
+Phase 1: Data + Math
 
 Done
 
-None yet.
+- Renamed project brief to PROJECT_BRIEF.md
+- Initialized Vite + React 18 project scaffold
+- Installed Tailwind CSS and configured the brief's dark palette
+- Loaded Inter and IBM Plex Mono from Google Fonts
+- Built a minimal page shell with the project title and four placeholder sections
+- Confirmed `npm run build` passes
 
 Next
 
-- Initialize Vite + React + Tailwind project
-- Configure dark color palette per the brief's visual design section
-- Load Inter and IBM Plex Mono from Google Fonts
-- Build a minimal page shell that renders a project title and four placeholder sections
-- Confirm `npm run build` passes
-- Update STATUS.md to mark Phase 0 done, Phase 1 next
-- Commit: "Phase 0: project scaffold"
-- Stop and report back for review before Phase 1
+- Create src/data/vehicles.js with the comparison table values, sourced
+- Create src/lib/economics.js with pure functions for marginal cost, cost per kg, and gross margin
+- Keep all numeric assumptions flowing from src/data/ through src/lib/ into components
+- Add source comments with URLs for every value in src/data/
+- Sanity-check outputs against published estimates
+- Run `npm run build`
+- Update STATUS.md to mark Phase 1 done, Phase 2 next
+- Commit and push Phase 1 when complete
+- Stop and report back for review before Phase 2
 
 Blockers / questions for human
 
-None yet.
+- Human should spot-check the data layer after Phase 1 against original sources, per the brief.
 
 Last updated
 May 9, 2026
