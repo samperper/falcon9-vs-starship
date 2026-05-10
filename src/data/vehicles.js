@@ -137,7 +137,7 @@ export const vehicles = {
         value: 35_000,
         unit: 'kg',
         sources: ['new_space_economy_starship_v3_2026', 'payload_starship_report'],
-        note: 'Current demonstrated Starship payload-envelope denominator for the arithmetic-table list $/kg row; V3 target payload is shown separately in the reference card and V3 callout.',
+        note: 'Current demonstrated Starship payload-envelope denominator for the arithmetic-table $/kg rows; V3 target payload is shown separately in the reference card and V3 callout.',
         asOf,
       },
       targetPayloadToLeo: {

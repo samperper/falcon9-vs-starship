@@ -87,6 +87,9 @@ Done
 - Styled the Starship V3 callout as a full-width muted card with an orange left border and the exact requested heading
 - Reconfirmed the redundant Falcon Heavy in-column card remains removed
 - Confirmed the four-fix Node sanity check, `npm run build`, and browser smoke test all pass
+- Fixed the arithmetic-table $/kg denominator mismatch so each vehicle uses one payload basis for both list-price $/kg and marginal-cost $/kg
+- Confirmed Falcon Heavy now uses 63,800 kg for both arithmetic $/kg rows: $1,520/kg list and $918/kg marginal
+- Confirmed the denominator sanity check and `npm run build` pass after the correction
 
 Next
 

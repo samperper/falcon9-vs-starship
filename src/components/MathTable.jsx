@@ -23,25 +23,26 @@ const tableRows = {
   ],
 };
 
-const getListPayloadMetric = (vehicle) => {
+const getArithmeticPayloadMetric = (vehicle) => {
   if (vehicle.id === 'falconHeavy') {
     return vehicle.metrics.payloadToLeoExpendable;
   }
 
-  return vehicle.metrics.listPricePayloadToLeo ?? vehicle.metrics.payloadToLeo ?? vehicle.metrics.payloadToLeoReusable ?? vehicle.metrics.payloadToLeoExpendable;
+  return (
+    vehicle.metrics.listPricePayloadToLeo ??
+    vehicle.metrics.payloadToLeo ??
+    vehicle.metrics.payloadToLeoReusable ??
+    vehicle.metrics.payloadToLeoExpendable
+  );
 };
-
-const getMarginalPayloadMetric = (vehicle) =>
-  vehicle.metrics.payloadToLeoReusable ?? getListPayloadMetric(vehicle);
 
 function MathTable({ vehicle, economics }) {
   const rows = tableRows[vehicle.calculationModel];
   const listPrice = readValue(vehicle.metrics.listPrice);
-  const listPayloadKg = readValue(getListPayloadMetric(vehicle));
-  const marginalPayloadKg = readValue(getMarginalPayloadMetric(vehicle));
+  const payloadKg = readValue(getArithmeticPayloadMetric(vehicle));
   const contributionMargin = listPrice - economics.marginalCostUsd;
-  const listPricePerKg = calculateCostPerKg(listPrice, listPayloadKg);
-  const marginalCostPerKg = calculateCostPerKg(economics.marginalCostUsd, marginalPayloadKg);
+  const listPricePerKg = calculateCostPerKg(listPrice, payloadKg);
+  const marginalCostPerKg = calculateCostPerKg(economics.marginalCostUsd, payloadKg);
 
   return (
     <div className="overflow-hidden rounded-md border border-white/10 bg-black/30">

@@ -1,5 +1,20 @@
 # AGENT_LOG
 
+## 2026-05-10 - Arithmetic $/kg denominator correction
+
+Implemented:
+- Updated the arithmetic table so each vehicle uses one payload denominator for both list-price $/kg and marginal-cost $/kg.
+- Set Falcon Heavy's shared arithmetic denominator to 63,800 kg expendable LEO payload, matching its $97M list-price basis.
+- Updated the Starship table payload note to describe both arithmetic-table $/kg rows rather than only the list-price row.
+
+Verification:
+- Denominator sanity check passed for Falcon 9, Falcon Heavy, and Starship: all rows use one denominator per vehicle and positive margin implies marginal $/kg below list $/kg.
+- Falcon Heavy now shows $1,520/kg list and $918/kg marginal on the same 63,800 kg denominator.
+- `npm run build` passed. Vite still reports the existing non-failing Recharts chunk-size warning and plugin timing warning.
+
+Notes / follow-up:
+- Live URL for final human review: https://falcon9-vs-starship.vercel.app
+
 ## 2026-05-10 - Falcon Heavy cost-stack and arithmetic clarity
 
 Implemented:
