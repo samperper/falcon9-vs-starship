@@ -109,6 +109,7 @@ function AnnotationLegend() {
 
 function CostCurveChart() {
   const [containerRef, width] = useMeasuredWidth();
+  const [activeAnnotationId, setActiveAnnotationId] = useState(null);
   const height = width < 640 ? 620 : 560;
   const margin = width < 640
     ? { top: 42, right: 24, bottom: 72, left: 62 }
@@ -164,6 +165,14 @@ function CostCurveChart() {
       markerY: clamp(point.y + offset.y, margin.top + 12, height - margin.bottom - 12),
     };
   });
+  const activeAnnotation = annotationMarkers.find((annotation) => annotation.id === activeAnnotationId);
+  const activeTooltip = activeAnnotation
+    ? {
+      left: clamp(activeAnnotation.markerX, 112, width - 112),
+      top: activeAnnotation.markerY < 96 ? activeAnnotation.markerY + 18 : activeAnnotation.markerY - 18,
+      placement: activeAnnotation.markerY < 96 ? 'below' : 'above',
+    }
+    : null;
 
   return (
     <div className="rounded-lg border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),transparent),#0d0d0d] p-4 shadow-2xl shadow-black/30 sm:p-6">
@@ -185,7 +194,11 @@ function CostCurveChart() {
         <span className="font-medium text-starship">Analyst range:</span> $100-$500/kg near-term; $10-$50/kg long-term target.
       </div>
 
-      <div ref={containerRef} className="relative min-h-[620px] w-full sm:min-h-[560px]">
+      <div
+        ref={containerRef}
+        className="relative min-h-[620px] w-full sm:min-h-[560px]"
+        onClick={() => setActiveAnnotationId(null)}
+      >
         {width > 0 ? (
           <>
             <svg width={width} height={height} role="img" aria-label="Log-scale cost per kilogram to low Earth orbit over time">
@@ -244,7 +257,21 @@ function CostCurveChart() {
                 const color = getAnnotationColor(annotation);
 
                 return (
-                  <g key={annotation.id}>
+                  <g
+                    key={annotation.id}
+                    className="cursor-pointer outline-none"
+                    role="button"
+                    tabIndex="0"
+                    aria-label={`${annotation.number}. ${annotation.label}, ${annotation.detail}, ${annotation.displayValue}`}
+                    onMouseEnter={() => setActiveAnnotationId(annotation.id)}
+                    onMouseLeave={() => setActiveAnnotationId(null)}
+                    onFocus={() => setActiveAnnotationId(annotation.id)}
+                    onBlur={() => setActiveAnnotationId(null)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setActiveAnnotationId((currentId) => (currentId === annotation.id ? null : annotation.id));
+                    }}
+                  >
                     <line
                       x1={annotation.x}
                       x2={annotation.markerX}
@@ -254,6 +281,7 @@ function CostCurveChart() {
                       strokeOpacity="0.35"
                       strokeWidth="1"
                     />
+                    <circle cx={annotation.markerX} cy={annotation.markerY} r="16" fill="transparent" />
                     <circle cx={annotation.markerX} cy={annotation.markerY} r="11" fill="#0A0A0A" stroke={color} strokeWidth="1.5" />
                     <text
                       x={annotation.markerX}
@@ -271,6 +299,36 @@ function CostCurveChart() {
                 Cost per kilogram to LEO, USD/kg, log scale
               </text>
             </svg>
+            {activeAnnotation && activeTooltip ? (
+              <div
+                className="absolute z-20 w-56 rounded-md border border-white/10 bg-black/95 p-3 text-left shadow-2xl shadow-black/40"
+                style={{
+                  left: activeTooltip.left,
+                  top: activeTooltip.top,
+                  transform: activeTooltip.placement === 'above' ? 'translate(-50%, -100%)' : 'translate(-50%, 0)',
+                }}
+                onClick={(event) => event.stopPropagation()}
+              >
+                <div className="mb-2 flex items-center gap-2">
+                  <span
+                    className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border bg-black/50 font-mono text-xs font-semibold tabular-nums"
+                    style={{ borderColor: getAnnotationColor(activeAnnotation), color: getAnnotationColor(activeAnnotation) }}
+                  >
+                    {activeAnnotation.number}
+                  </span>
+                  <p className="text-sm font-medium leading-5 text-text">
+                    {activeAnnotation.label}
+                    <Cite sourceIds={activeAnnotation.sources} accent={getAnnotationAccent(activeAnnotation)} />
+                  </p>
+                </div>
+                <p className="font-mono text-xs leading-5 text-zinc-500">
+                  {activeAnnotation.detail}
+                </p>
+                <p className="mt-1 font-mono text-xs leading-5 text-zinc-300">
+                  {activeAnnotation.displayValue}
+                </p>
+              </div>
+            ) : null}
           </>
         ) : null}
       </div>

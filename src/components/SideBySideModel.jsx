@@ -81,7 +81,7 @@ function VehicleSnapshotCards() {
             </div>
             {vehicle.id === 'falconHeavy' ? (
               <p className="mt-5 border-t border-white/10 pt-4 text-xs leading-5 text-zinc-500">
-                Counterintuitive but current: about $1,520/kg at list price using full expendable LEO capacity.
+                At $97M for 63,800 kg, Falcon Heavy has the lowest list $/kg of any operational rocket flying today.
               </p>
             ) : null}
           </article>
@@ -155,7 +155,7 @@ function SideBySideModel() {
           <span className="h-px flex-1 bg-white/10" />
         </div>
 
-        <div className="grid gap-5 xl:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
           {items.map((item) => (
             <VehiclePanel
               key={item.vehicle.id}

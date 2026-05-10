@@ -65,15 +65,15 @@ function VehiclePanel({ vehicle, inputs, economics, onInputChange }) {
   const accent = accentClasses[vehicle.accent];
 
   return (
-    <article className={`rounded-lg border ${accent.border} bg-surface/85 p-5 shadow-2xl shadow-black/30 backdrop-blur sm:p-6`}>
+    <article className={`min-w-0 rounded-lg border ${accent.border} bg-surface/85 p-4 shadow-2xl shadow-black/30 backdrop-blur sm:p-5 lg:p-6 md:p-4 2xl:p-6`}>
       <div className="mb-6 flex items-start justify-between gap-4">
-        <div>
-          <p className={`font-mono text-xs font-medium uppercase tracking-[0.18em] ${accent.text}`}>
+        <div className="min-w-0">
+          <p className={`break-words font-mono text-[0.68rem] font-medium uppercase leading-5 tracking-[0.12em] sm:text-xs md:text-[0.62rem] xl:text-[0.68rem] 2xl:text-xs ${accent.text}`}>
             {vehicle.reuseModel}
           </p>
-          <h3 className="mt-2 text-3xl font-semibold leading-none text-text">{vehicle.name}</h3>
+          <h3 className="mt-2 text-2xl font-semibold leading-tight text-text sm:text-3xl md:text-2xl 2xl:text-3xl">{vehicle.name}</h3>
         </div>
-        <div className={`h-2 w-16 rounded-full ${accent.bg}`} />
+        <div className={`h-2 w-12 shrink-0 rounded-full sm:w-16 md:w-10 xl:w-14 2xl:w-16 ${accent.bg}`} />
       </div>
 
       <MetricStrip vehicle={vehicle} economics={economics} />

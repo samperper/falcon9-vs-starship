@@ -64,10 +64,16 @@ Done
 - Added the human-provided closer prose in Section 04 before the source list
 - Finalized README.md with the live URL, one-sentence description, author name, and public-source methodology note
 - Confirmed `npm run build` passes after adding Phase 4 prose and finalizing README.md
+- Updated the Falcon Heavy top-card copy to the final operational list-price $/kg wording
+- Tightened the three-column interactive model layout so Falcon 9, Falcon Heavy, and Starship use equal-width columns above mobile and stack below 768px
+- Shortened metric labels to MARGINAL COST, COST / KG, and MARGIN, with consistent non-wrapping metric number sizing
+- Added hover/focus/click tooltips to numbered $/kg curve markers while keeping the legend below the chart
+- Ran a responsive text/layout pass for opener, closer, vehicle cards, metric cards, and curve annotations
+- Confirmed `npm run build` passes after the final polish pass
 
 Next
 
-- Commit and push the Phase 4 prose / README update
+- Commit and push the final polish pass
 - Send the live URL back for final human review
 
 Blockers / questions for human

@@ -1,5 +1,21 @@
 # AGENT_LOG
 
+## 2026-05-09 - Final review polish fixes
+
+Implemented:
+- Replaced the Falcon Heavy top-card note with the requested final copy: "At $97M for 63,800 kg, Falcon Heavy has the lowest list $/kg of any operational rocket flying today."
+- Updated the interactive model grid so Falcon 9, Falcon Heavy, and Starship use equal-width columns from the `md` breakpoint up, and stack full width below 768px in vehicle order.
+- Shortened metric labels to MARGINAL COST, COST / KG, and MARGIN, with non-wrapping labels and consistent metric-number sizing across all three vehicles.
+- Added additive hover/focus/click tooltips to the numbered $/kg curve markers. Tooltips show the marker number, milestone label, year/detail, $/kg value, and source superscript while preserving the legend below the chart.
+- Ran a responsive text/layout pass on the vehicle panels, metric cards, opener prose, closer prose, and curve tooltip layer.
+
+Verification:
+- `npm run build` passed. Vite still reports the existing non-failing Recharts chunk-size warning.
+- Browser check confirmed exact Falcon Heavy copy, equal desktop/tablet column widths, no metric label wrapping, no desktop overflow, working marker hover tooltip, and working marker tap/dismiss behavior. The VS Code browser viewport API accepted a 390px viewport but exposed a fixed 924px document width, so the mobile guarantee is enforced through Tailwind breakpoints and component structure rather than a true 375px measurement in that shared tab.
+
+Notes / follow-up:
+- Live URL for final human review: https://falcon9-vs-starship.vercel.app
+
 ## 2026-05-09 - Phase 4 prose and README finalization
 
 Implemented:
