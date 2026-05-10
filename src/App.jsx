@@ -10,12 +10,12 @@ function App() {
       <div className="relative border-b border-white/10">
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.055),transparent_45%),radial-gradient(circle_at_70%_10%,rgba(0,119,218,0.16),transparent_28%),radial-gradient(circle_at_88%_18%,rgba(255,107,53,0.12),transparent_22%)]" />
         <div className="relative mx-auto flex min-h-[46vh] w-full max-w-6xl flex-col justify-end px-5 pb-10 pt-14 sm:px-8 lg:px-10 lg:pb-12">
-          <p className="font-mono text-xs font-medium uppercase tracking-[0.2em] text-muted">
-            SpaceX launch economics
-          </p>
-          <h1 className="mt-5 max-w-4xl text-5xl font-semibold leading-[0.98] text-text sm:text-6xl lg:text-7xl">
-            Falcon 9 vs Starship
+          <h1 className="max-w-4xl text-5xl font-semibold leading-[0.98] text-text sm:text-6xl lg:text-7xl">
+            The SpaceX Fleet: A Financial Breakdown
           </h1>
+          <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-400 sm:text-lg sm:leading-8">
+            An interactive look at launch economics across Falcon 9, Falcon Heavy, and Starship
+          </p>
         </div>
       </div>
 

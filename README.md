@@ -1,8 +1,8 @@
-# Falcon 9 vs Starship
+# The SpaceX Fleet: A Financial Breakdown
 
 Live URL: https://falcon9-vs-starship.vercel.app
 
-Falcon 9 vs Starship is an interactive launch-economics model comparing SpaceX vehicle costs, pricing, payload economics, customers, and cost-per-kilogram trajectories.
+The SpaceX Fleet: A Financial Breakdown is an interactive launch-economics model comparing Falcon 9, Falcon Heavy, and Starship costs, pricing, payload economics, customers, and cost-per-kilogram trajectories.
 
 Author: Sam Perper
 
