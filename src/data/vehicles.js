@@ -257,7 +257,7 @@ export const vehicles = {
     type: 'launchVehicle',
     accent: 'heavy',
     calculationModel: 'falconHeavy',
-    reuseModel: 'Three Falcon 9-derived cores; side boosters often recovered, center core commonly expended on high-energy missions',
+    reuseModel: 'Three Falcon 9-derived cores; side boosters often recovered',
     interactiveInputOrder: [
       'sideBoosterBuildCost',
       'sideBoosterUsefulFlights',

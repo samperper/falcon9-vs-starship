@@ -70,10 +70,15 @@ Done
 - Added hover/focus/click tooltips to numbered $/kg curve markers while keeping the legend below the chart
 - Ran a responsive text/layout pass for opener, closer, vehicle cards, metric cards, and curve annotations
 - Confirmed `npm run build` passes after the final polish pass
+- Fixed the desktop three-column metric card layout by enforcing 100px minimum metric cards, p-3 internal padding, gap-3 spacing, and stacking metric cards below the width where three cards can fit
+- Shortened the Falcon Heavy model subtitle to "Three Falcon 9-derived cores; side boosters often recovered"
+- Reduced the model shell padding so three equal vehicle columns have enough room for 100px metric cards at 1280px, 1440px, and 1920px layout budgets
+- Confirmed `npm run build` passes after the desktop metric-card layout fix
+- Verified the available browser render has equal vehicle columns, metric cards above 100px, no metric label wrapping, the shortened Falcon Heavy subtitle, no console warnings/errors, and no overflow
 
 Next
 
-- Commit and push the final polish pass
+- Commit and push the desktop metric-card layout fix
 - Send the live URL back for final human review
 
 Blockers / questions for human

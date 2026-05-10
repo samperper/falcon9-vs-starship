@@ -124,7 +124,7 @@ function SideBySideModel() {
 
   return (
     <div className="space-y-8">
-      <div className="rounded-lg border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(0,119,218,0.18),transparent_32%),radial-gradient(circle_at_top_right,rgba(255,107,53,0.16),transparent_30%),#0d0d0d] p-5 shadow-2xl shadow-black/40 sm:p-6 lg:p-8">
+      <div className="rounded-lg border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(0,119,218,0.18),transparent_32%),radial-gradient(circle_at_top_right,rgba(255,107,53,0.16),transparent_30%),#0d0d0d] p-5 shadow-2xl shadow-black/40 sm:p-6">
         <div className="mb-7 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
           <div className="max-w-2xl">
             <p className="font-mono text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">

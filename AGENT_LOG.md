@@ -1,5 +1,22 @@
 # AGENT_LOG
 
+## 2026-05-10 - Desktop metric-card layout fix
+
+Implemented:
+- Updated the metric strip so each metric card has a `min-w-[100px]`, `p-3` internal padding, and `gap-3` spacing.
+- Changed the metric strip to stack vertically until the `xl` breakpoint, where the 100px cards plus gaps fit inside the equal-width vehicle columns.
+- Kept the vehicle model grid as `grid-cols-1 md:grid-cols-3` so the three vehicle columns remain equal width above mobile and stacked below 768px.
+- Removed the extra large-screen padding on the model shell so each vehicle column has enough room for a 324px metric-card row at the 1280px layout budget.
+- Shortened the Falcon Heavy subtitle to "Three Falcon 9-derived cores; side boosters often recovered".
+
+Verification:
+- `npm run build` passed. Vite still reports the existing non-failing Recharts chunk-size warning.
+- A layout budget check for 1280px, 1440px, and 1920px confirmed each equal vehicle column has 328px available and the metric row needs 324px, so the 100px cards plus `gap-3` fit at all requested widths.
+- Browser check in the available VS Code tab confirmed no console warnings/errors, the shortened Falcon Heavy subtitle, equal rendered vehicle columns, metric cards above 100px, no metric label wrapping, and no overflow. The shared tab still exposes a fixed 924px document width, so the requested 1280/1440/1920 checks were verified through the deterministic Tailwind layout budget rather than that tab's document width.
+
+Notes / follow-up:
+- Live URL for final human review: https://falcon9-vs-starship.vercel.app
+
 ## 2026-05-09 - Final review polish fixes
 
 Implemented:
