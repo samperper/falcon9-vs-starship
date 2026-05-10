@@ -133,6 +133,13 @@ export const vehicles = {
         note: 'Reusable-mode working payload assumption; full target is often described as up to 150,000 kg.',
         asOf,
       },
+      listPricePayloadToLeo: {
+        value: 35_000,
+        unit: 'kg',
+        sources: ['new_space_economy_starship_v3_2026', 'payload_starship_report'],
+        note: 'Current demonstrated Starship payload-envelope denominator for the arithmetic-table list $/kg row; V3 target payload is shown separately in the reference card and V3 callout.',
+        asOf,
+      },
       targetPayloadToLeo: {
         value: 150_000,
         unit: 'kg',

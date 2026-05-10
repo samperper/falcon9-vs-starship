@@ -81,10 +81,15 @@ Done
 - Added the one-line real-time model explainer beneath the "Move the assumptions" headline
 - Confirmed `npm run build` passes after the final cleanup pass
 - Browser smoke-tested the final cleanup with no console warnings/errors, no overflow, V3 placed before the interactive model, and the redundant Falcon Heavy card removed
+- Split the Falcon Heavy cost-stack chart into side-booster amortization, expended center core, stage 2, and fuel segments with distinct purple tones and labels
+- Added list-price $/kg and marginal-cost $/kg rows to all three arithmetic tables
+- Added a sourced Starship arithmetic-table list-price payload basis so default list $/kg ordering matches the requested sanity relationship
+- Styled the Starship V3 callout as a full-width muted card with an orange left border and the exact requested heading
+- Reconfirmed the redundant Falcon Heavy in-column card remains removed
+- Confirmed the four-fix Node sanity check, `npm run build`, and browser smoke test all pass
 
 Next
 
-- Commit and push the final cleanup pass
 - Send the live URL back for final human review
 
 Blockers / questions for human
@@ -93,4 +98,4 @@ Blockers / questions for human
 - Falcon Heavy flight count and Dragon fleet mission count are time-sensitive and should be refreshed before final publication.
 
 Last updated
-May 9, 2026
+May 10, 2026

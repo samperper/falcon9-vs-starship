@@ -1,5 +1,6 @@
 import Cite from './Cite';
-import { formatMoneyFull, formatPercent } from '../lib/formatters';
+import { calculateCostPerKg, readValue } from '../lib/economics';
+import { formatCostPerKg, formatMoneyFull, formatPercent } from '../lib/formatters';
 
 const tableRows = {
   falcon9: [
@@ -22,10 +23,25 @@ const tableRows = {
   ],
 };
 
+const getListPayloadMetric = (vehicle) => {
+  if (vehicle.id === 'falconHeavy') {
+    return vehicle.metrics.payloadToLeoExpendable;
+  }
+
+  return vehicle.metrics.listPricePayloadToLeo ?? vehicle.metrics.payloadToLeo ?? vehicle.metrics.payloadToLeoReusable ?? vehicle.metrics.payloadToLeoExpendable;
+};
+
+const getMarginalPayloadMetric = (vehicle) =>
+  vehicle.metrics.payloadToLeoReusable ?? getListPayloadMetric(vehicle);
+
 function MathTable({ vehicle, economics }) {
   const rows = tableRows[vehicle.calculationModel];
-  const listPrice = vehicle.metrics.listPrice.value;
+  const listPrice = readValue(vehicle.metrics.listPrice);
+  const listPayloadKg = readValue(getListPayloadMetric(vehicle));
+  const marginalPayloadKg = readValue(getMarginalPayloadMetric(vehicle));
   const contributionMargin = listPrice - economics.marginalCostUsd;
+  const listPricePerKg = calculateCostPerKg(listPrice, listPayloadKg);
+  const marginalCostPerKg = calculateCostPerKg(economics.marginalCostUsd, marginalPayloadKg);
 
   return (
     <div className="overflow-hidden rounded-md border border-white/10 bg-black/30">
@@ -64,9 +80,27 @@ function MathTable({ vehicle, economics }) {
               {formatMoneyFull(contributionMargin)}
             </td>
           </tr>
-          <tr className="bg-white/[0.035] font-semibold text-text">
+          <tr className="border-b border-white/15 bg-white/[0.035] font-semibold text-text">
             <td className="px-4 py-3">Margin %</td>
             <td className="px-4 py-3 text-right">{formatPercent(economics.grossMargin)}</td>
+          </tr>
+          <tr className="border-b border-white/[0.07]">
+            <td className="px-4 py-3 text-zinc-400">List price per kg of payload</td>
+            <td className="px-4 py-3 text-right text-zinc-200">
+              <div>{formatCostPerKg(listPricePerKg)}</div>
+              <div className="mt-1 text-[0.68rem] leading-4 text-[var(--text-tertiary)]">
+                What the customer pays per kilogram at list price
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td className="px-4 py-3 text-zinc-400">Marginal cost per kg of payload</td>
+            <td className="px-4 py-3 text-right text-zinc-200">
+              <div>{formatCostPerKg(marginalCostPerKg)}</div>
+              <div className="mt-1 text-[0.68rem] leading-4 text-[var(--text-tertiary)]">
+                SpaceX's estimated operating cost per kilogram flown
+              </div>
+            </td>
           </tr>
         </tbody>
       </table>

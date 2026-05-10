@@ -95,11 +95,11 @@ function StarshipV3Callout() {
   const context = vehicles.starship.v3Context;
 
   return (
-    <div className="mt-5 rounded-lg border border-starship/20 bg-starship/10 p-5 sm:p-6">
+    <div className="mt-5 rounded-lg border border-white/10 border-l-4 border-l-starship bg-starship/10 p-5 sm:p-6">
       <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
         <div className="max-w-md">
           <p className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-starship">
-            {context.eyebrow}
+            STARSHIP V3 — DEBUTING FLIGHT 12, MAY 2026
             <Cite sourceIds={context.sources} accent="starship" />
           </p>
           <p className="mt-3 text-sm leading-6 text-zinc-400">{context.note}</p>

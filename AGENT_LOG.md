@@ -1,5 +1,23 @@
 # AGENT_LOG
 
+## 2026-05-10 - Falcon Heavy cost-stack and arithmetic clarity
+
+Implemented:
+- Split the Falcon Heavy cost-stack chart into four visible segments: side booster amortization, expended center core, stage 2, and fuel.
+- Added list-price $/kg and marginal-cost $/kg rows to all three arithmetic tables, with right-aligned IBM Plex Mono values and explanatory sub-labels.
+- Kept Falcon Heavy list $/kg on the $97M / 63,800 kg expendable-capacity basis while keeping marginal $/kg tied to the reusable-side-booster model payload.
+- Added a sourced Starship arithmetic-table list-price payload basis so the default list $/kg ordering matches the requested sanity relationship without changing the top reference card.
+- Styled the Starship V3 callout as a full-width muted card with an orange left border and the exact requested heading.
+- Verified the redundant Falcon Heavy in-column card remains removed.
+
+Verification:
+- Node sanity check passed: Falcon Heavy list $/kg is lowest, Falcon Heavy marginal $/kg is above its list $/kg, increasing side-booster useful flights lowers Falcon Heavy marginal $/kg, Starship marginal $/kg is lowest, Starship list $/kg sits between Falcon Heavy and Falcon 9, and Starship margin remains highest.
+- `npm run build` passed. Vite still reports the existing non-failing Recharts chunk-size warning.
+- Browser smoke test confirmed the V3 heading, new Falcon Heavy cost-stack labels, three list $/kg rows, three marginal $/kg rows, no redundant Falcon Heavy panel note, and no console/page errors.
+
+Notes / follow-up:
+- Live URL for final human review: https://falcon9-vs-starship.vercel.app
+
 ## 2026-05-10 - Final cleanup before review
 
 Implemented:

@@ -16,18 +16,24 @@ import { formatMoney, toMillions } from '../lib/formatters';
 const componentColors = {
   falcon: {
     hardware: '#0077DA',
+    sideBooster: '#0077DA',
+    centerCore: '#1E3A5F',
     refurb: '#38BDF8',
     stageTwo: '#1E3A5F',
     fuel: '#7DD3FC',
   },
   heavy: {
     hardware: '#7B61FF',
+    sideBooster: '#7B61FF',
+    centerCore: '#4C1D95',
     refurb: '#A78BFA',
-    stageTwo: '#4C1D95',
+    stageTwo: '#A78BFA',
     fuel: '#C4B5FD',
   },
   starship: {
     hardware: '#FF6B35',
+    sideBooster: '#FF6B35',
+    centerCore: '#7C2D12',
     refurb: '#F59E0B',
     stageTwo: '#7C2D12',
     fuel: '#7C2D12',
@@ -42,6 +48,8 @@ const vehicleAccent = {
 
 const componentLabels = {
   hardware: 'Vehicle amortization',
+  sideBooster: 'Side booster amortization',
+  centerCore: 'Expended center core',
   refurb: 'Refurbishment',
   stageTwo: 'Stage 2',
   fuel: 'Fuel',
@@ -61,20 +69,13 @@ const legendGroups = [
   {
     id: 'heavy',
     label: 'Falcon Heavy',
-    segments: ['hardware', 'stageTwo', 'fuel'],
+    segments: ['sideBooster', 'centerCore', 'stageTwo', 'fuel'],
   },
 ];
 
 const getHardwareCost = (economics) => {
   if (Number.isFinite(economics.components.boosterAmortizationUsd)) {
     return economics.components.boosterAmortizationUsd;
-  }
-
-  const falconHeavyHardware =
-    (economics.components.sideBoosterAmortizationUsd ?? 0) + (economics.components.centerCoreUsd ?? 0);
-
-  if (falconHeavyHardware > 0) {
-    return falconHeavyHardware;
   }
 
   if (Number.isFinite(economics.components.stackAmortizationUsd)) {
@@ -89,6 +90,8 @@ const getChartData = (items) =>
     name: vehicle.name,
     accent: vehicle.accent,
     hardware: toMillions(getHardwareCost(economics)),
+    sideBooster: toMillions(economics.components.sideBoosterAmortizationUsd ?? 0),
+    centerCore: toMillions(economics.components.centerCoreUsd ?? 0),
     refurb: toMillions(economics.components.refurbUsd ?? 0),
     stageTwo: toMillions(economics.components.stageTwoUsd ?? 0),
     fuel: toMillions(economics.components.fuelUsd ?? 0),
@@ -241,6 +244,16 @@ function CostStackedBar({ items, showPriceCeiling, priceCeilingBand }) {
             <Bar dataKey="hardware" stackId="cost" radius={[4, 0, 0, 4]}>
               {chartData.map((entry) => (
                 <Cell key={`hardware-${entry.name}`} fill={componentColors[entry.accent].hardware} />
+              ))}
+            </Bar>
+            <Bar dataKey="sideBooster" stackId="cost" radius={[4, 0, 0, 4]}>
+              {chartData.map((entry) => (
+                <Cell key={`side-booster-${entry.name}`} fill={componentColors[entry.accent].sideBooster} />
+              ))}
+            </Bar>
+            <Bar dataKey="centerCore" stackId="cost">
+              {chartData.map((entry) => (
+                <Cell key={`center-core-${entry.name}`} fill={componentColors[entry.accent].centerCore} />
               ))}
             </Bar>
             <Bar dataKey="refurb" stackId="cost">
