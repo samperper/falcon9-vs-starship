@@ -2,6 +2,7 @@ import { sourceOrder, sources } from '../data/sources';
 
 const accentClass = {
   falcon: 'hover:text-falcon focus-visible:text-falcon',
+  heavy: 'hover:text-[#B7A8FF] focus-visible:text-[#B7A8FF]',
   starship: 'hover:text-starship focus-visible:text-starship',
   neutral: 'hover:text-text focus-visible:text-text',
 };

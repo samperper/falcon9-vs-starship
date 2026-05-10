@@ -106,12 +106,28 @@ export const calculateStarshipComponents = (vehicle, overrides = {}, caseName = 
   };
 };
 
+export const calculateFalconHeavyComponents = (vehicle, overrides = {}, caseName = DEFAULT_CASE) => {
+  const inputs = mergeVehicleInputs(vehicle, overrides, caseName);
+  const sideBoosterAmortizationUsd =
+    (zeroFloor(inputs.sideBoosterBuildCost) * 2) / atLeastOne(inputs.sideBoosterUsefulFlights);
+  const centerCoreUsd = zeroFloor(inputs.centerCoreCost);
+  const stageTwoUsd = zeroFloor(inputs.stageTwoCost);
+  const fuelUsd = zeroFloor(inputs.fuelPerLaunch);
+
+  return {
+    sideBoosterAmortizationUsd,
+    centerCoreUsd,
+    stageTwoUsd,
+    fuelUsd,
+  };
+};
+
 export const sumCostComponents = (components) =>
   Object.values(components).reduce((totalUsd, value) => totalUsd + zeroFloor(value), 0);
 
 export const calculatePublishedEconomics = (vehicle, caseName = DEFAULT_CASE) => {
   const marginalCostUsd = readValue(vehicle.metrics.marginalCost, caseName);
-  const payloadToLeoKg = readValue(vehicle.metrics.payloadToLeo, caseName);
+  const payloadToLeoKg = readValue(vehicle.metrics.modelPayloadToLeo ?? vehicle.metrics.payloadToLeo ?? vehicle.metrics.payloadToLeoReusable ?? vehicle.metrics.payloadToLeoExpendable, caseName);
   const listPriceUsd = readValue(vehicle.metrics.listPrice, caseName);
 
   return {
@@ -124,6 +140,7 @@ export const calculatePublishedEconomics = (vehicle, caseName = DEFAULT_CASE) =>
 export const calculateVehicleEconomics = (vehicle, overrides = {}, caseName = DEFAULT_CASE) => {
   const componentCalculators = {
     falcon9: calculateFalcon9Components,
+    falconHeavy: calculateFalconHeavyComponents,
     starship: calculateStarshipComponents,
   };
   const calculateComponents = componentCalculators[vehicle.calculationModel];
@@ -135,7 +152,7 @@ export const calculateVehicleEconomics = (vehicle, overrides = {}, caseName = DE
   const inputs = mergeVehicleInputs(vehicle, overrides, caseName);
   const components = calculateComponents(vehicle, inputs, caseName);
   const marginalCostUsd = sumCostComponents(components);
-  const payloadToLeoKg = readValue(vehicle.metrics.payloadToLeo, caseName);
+  const payloadToLeoKg = readValue(vehicle.metrics.modelPayloadToLeo ?? vehicle.metrics.payloadToLeo ?? vehicle.metrics.payloadToLeoReusable ?? vehicle.metrics.payloadToLeoExpendable, caseName);
   const listPriceUsd = readValue(vehicle.metrics.listPrice, caseName);
 
   return {
@@ -144,6 +161,6 @@ export const calculateVehicleEconomics = (vehicle, overrides = {}, caseName = DE
     marginalCostUsd,
     costPerKgUsd: calculateCostPerKg(marginalCostUsd, payloadToLeoKg),
     grossMargin: calculateGrossMargin(listPriceUsd, marginalCostUsd),
-    published: calculatePublishedEconomics(vehicle, caseName),
+    published: vehicle.metrics.marginalCost ? calculatePublishedEconomics(vehicle, caseName) : null,
   };
 };

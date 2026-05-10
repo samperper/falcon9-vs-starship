@@ -2,6 +2,7 @@ import { formatInputValue } from '../lib/formatters';
 
 const accentClass = {
   falcon: 'accent-falcon',
+  heavy: 'accent-heavy',
   starship: 'accent-starship',
 };
 

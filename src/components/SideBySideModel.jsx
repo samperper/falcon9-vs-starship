@@ -35,7 +35,7 @@ function VehicleSnapshotCards() {
           const listPriceUsd = readValue(vehicle.metrics.listPrice);
           const payloadKg = readValue(payloadMetric);
           const listCostPerKg = calculateCostPerKg(listPriceUsd, payloadKg);
-          const citationAccent = vehicle.accent === 'starship' ? 'starship' : vehicle.accent === 'heavy' ? 'neutral' : 'falcon';
+          const citationAccent = vehicle.accent === 'starship' ? 'starship' : vehicle.accent === 'heavy' ? 'heavy' : 'falcon';
 
         return (
           <article
@@ -46,12 +46,12 @@ function VehicleSnapshotCards() {
               <div className="mb-5 flex items-center justify-between gap-3">
                 <div>
                   <p className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
-                    {vehicle.accent === 'heavy' ? 'Active heavy-lift' : 'Primary comparison'}
+                    {vehicle.accent === 'heavy' ? 'Lowest operational list $/kg' : 'Primary comparison'}
                   </p>
                   <h4 className="mt-2 text-2xl font-semibold leading-tight text-text">{vehicle.shortName}</h4>
                 </div>
                 <span className={`rounded-full border px-2.5 py-1 font-mono text-[0.68rem] uppercase tracking-[0.12em] ${referenceAccentClass[vehicle.accent]}`}>
-                  {vehicle.accent === 'heavy' ? 'Reference' : vehicle.shortName}
+                  {vehicle.accent === 'heavy' ? 'Active' : vehicle.shortName}
                 </span>
               </div>
               <dl className="grid grid-cols-2 gap-x-4 gap-y-4 font-mono text-sm tabular-nums">
@@ -81,7 +81,7 @@ function VehicleSnapshotCards() {
             </div>
             {vehicle.id === 'falconHeavy' ? (
               <p className="mt-5 border-t border-white/10 pt-4 text-xs leading-5 text-zinc-500">
-                Reference only — see interactive model below for marginal-cost analysis.
+                Counterintuitive but current: about $1,520/kg at list price using full expendable LEO capacity.
               </p>
             ) : null}
           </article>
@@ -155,7 +155,7 @@ function SideBySideModel() {
           <span className="h-px flex-1 bg-white/10" />
         </div>
 
-        <div className="grid gap-5 xl:grid-cols-2">
+        <div className="grid gap-5 xl:grid-cols-3">
           {items.map((item) => (
             <VehiclePanel
               key={item.vehicle.id}

@@ -57,6 +57,10 @@ select {
   --thumb-color: #0077DA;
 }
 
+.model-slider.accent-heavy {
+  --thumb-color: #7B61FF;
+}
+
 .model-slider.accent-starship {
   --thumb-color: #FF6B35;
 }

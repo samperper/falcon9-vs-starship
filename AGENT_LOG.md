@@ -1,5 +1,29 @@
 # AGENT_LOG
 
+## 2026-05-09 - Research updates before Phase 4 close
+
+Read `Launch_Report_Findings` first and used it as the source packet for the requested material updates. The file was untracked at session start and is part of this update set because it contains the research backing for the changes.
+
+Implemented:
+- Corrected the Starship $/kg curve language and data so the projection now separates the $100-$500/kg near-term analyst range from the $10-$50/kg long-term target.
+- Added a below-chart note that Musk's $10/kg target is a long-run marginal-cost floor, not a near-term price, and cited SpaceX's October 2025 $100M per metric ton lunar/Mars surface-cargo pricing update.
+- Updated Starship development cost to $15B with Bloomberg / Reuters May 1, 2026 sourcing.
+- Added Starship V3 context to the Starship model panel: Flight 12 debut timing, ~100t reusable / 180-200t expendable payload, Raptor 3 thrust, integrated docking adapter, tanker/depot architecture, and variant family.
+- Updated Falcon Heavy launch-count context to 12 total launches, 0 in 2025, 1 in 2026, and 100% mission success as of May 2026, with the payload-delay and NSSL Phase 3 Lane 2 notes in the data layer.
+- Promoted Falcon Heavy from static reference into a third interactive economics column. The model uses Falcon 9-like side-booster cost and reuse sliders, a fixed expended $40M center core, Falcon-family stage 2 cost, ~$600K fuel, $97M list price, and ~27,000 kg reusable-side-booster LEO payload for marginal $/kg.
+- Kept the top Falcon Heavy comparison card focused on the counterintuitive $1,520/kg operational list-price floor using $97M / 63,800 kg expendable LEO capacity.
+- Updated cost-stack chart support for Falcon Heavy hardware, stage 2, and fuel colors.
+- Reduced the hero/header vertical spacing so the first content begins higher on a 1080p monitor.
+
+Verification:
+- `npm run build` passed. Vite still reports the existing non-failing Recharts chunk-size warning.
+- Node sanity check confirmed Starship development cost is $15B, Starship surface cargo pricing is $100,000/kg, Falcon Heavy launch count is 12, Falcon Heavy list $/kg rounds to $1,520/kg, and Falcon Heavy default marginal model outputs about $58.6M per launch / $2,170/kg / 39.6% margin.
+- Browser smoke test confirmed no console warnings/errors, no mobile horizontal overflow, Falcon Heavy interactive sliders render, the Starship V3 callout renders, and the corrected curve note renders.
+
+Notes / follow-up:
+- The local review server is intended to remain available at `http://127.0.0.1:5173/` for final human review after this pass.
+- Phase 4 prose and final README/source-polish work should still be reviewed by the human before publication.
+
 ## 2026-05-09 - Pre-Phase 4 polish: Falcon Heavy top section + curve annotations
 
 Started from a clean working tree after the Falcon Heavy / Dragon context commit had been pushed. Treated this as a pre-Phase-4 polish pass only; no opener/closer prose work was started.

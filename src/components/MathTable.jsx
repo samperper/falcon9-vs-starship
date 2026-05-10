@@ -8,6 +8,12 @@ const tableRows = {
     { id: 'stageTwoUsd', label: 'Second stage', inputId: 'stageTwoCost' },
     { id: 'fuelUsd', label: 'Fuel', inputId: 'fuelPerLaunch' },
   ],
+  falconHeavy: [
+    { id: 'sideBoosterAmortizationUsd', label: 'Two side boosters / useful flights', inputId: 'sideBoosterBuildCost' },
+    { id: 'centerCoreUsd', label: 'Center core expended', inputId: 'centerCoreCost' },
+    { id: 'stageTwoUsd', label: 'Second stage', inputId: 'stageTwoCost' },
+    { id: 'fuelUsd', label: 'Fuel', inputId: 'fuelPerLaunch' },
+  ],
   starship: [
     { id: 'superHeavyAmortizationUsd', label: 'Super Heavy build cost / booster flights', inputId: 'boosterUsefulFlights' },
     { id: 'shipAmortizationUsd', label: 'Ship build cost / ship flights', inputId: 'shipUsefulFlights' },

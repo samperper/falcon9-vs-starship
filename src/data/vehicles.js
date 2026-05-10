@@ -155,19 +155,37 @@ export const vehicles = {
         asOf,
       },
       costPerKgTarget: {
-        value: { low: 100, mid: 350, high: 600 },
+        value: { low: 100, mid: 300, high: 500 },
         unit: 'USD/kg',
-        sources: ['payload_starship_report', 'spacenexus_compare'],
-        note: 'Target economics range used for comparison to Falcon 9 and historical launch costs.',
+        sources: ['payload_starship_report', 'spacenexus_compare', 'nasa_technical_reports_starship_marginal_cost'],
+        note: 'Near-term analyst range for 2027-2030; the long-run $10-$50/kg target requires much higher reuse, lower build cost, and high cadence.',
+        asOf,
+      },
+      surfaceCargoPrice: {
+        value: 100_000,
+        unit: 'USD/kg',
+        sources: ['spacex_surface_cargo_pricing_2025'],
+        note: 'SpaceX October 2025 commercial pricing for lunar/Mars surface cargo: $100M per metric ton. This is destination delivery pricing, not LEO launch price.',
         asOf,
       },
       starshipDevelopmentCostToDate: {
-        value: 5_000_000_000,
+        value: 15_000_000_000,
         unit: 'USD',
-        sources: ['payload_dev_costs'],
-        note: 'Starship R&D to date; useful context, not part of marginal launch economics.',
+        sources: ['bloomberg_starship_r&d_2026'],
+        note: 'Bloomberg / Reuters reported SpaceX has spent more than $15B on Starship development, citing SpaceX IPO registration materials, with $3B budgeted in 2025 alone. Useful context, not part of marginal launch economics.',
         asOf,
       },
+    },
+    v3Context: {
+      eyebrow: 'Starship V3 - debuting Flight 12, May 2026',
+      sources: ['new_space_economy_starship_v3_2026', 'payload_starship_report', 'musk_starship_2m'],
+      items: [
+        'Payload: ~100t reusable / 180-200t expendable, versus V2\'s ~35t demonstrated envelope',
+        'Engines: Raptor 3 at 280 tf sea level, versus 230 tf on V2',
+        'Key change: integrated docking adapter enables tanker/depot refueling architecture',
+        'Variants: cargo, tanker, depot, HLS lunar lander, and point-to-point Earth delivery',
+      ],
+      note: 'Economically, V3 matters because higher payload changes cost per kilogram even if build cost is unchanged.',
     },
     modelInputs: {
       stackBuildCost: {
@@ -238,7 +256,12 @@ export const vehicles = {
     shortName: 'Falcon Heavy',
     type: 'launchVehicle',
     accent: 'heavy',
+    calculationModel: 'falconHeavy',
     reuseModel: 'Three Falcon 9-derived cores; side boosters often recovered, center core commonly expended on high-energy missions',
+    interactiveInputOrder: [
+      'sideBoosterBuildCost',
+      'sideBoosterUsefulFlights',
+    ],
     metrics: {
       listPrice: {
         value: 97_000_000,
@@ -252,6 +275,13 @@ export const vehicles = {
         unit: 'kg',
         sources: ['spacex_falcon_heavy_page', 'spacex_capabilities_2022_archive'],
         note: 'Maximum fully expendable low Earth orbit performance.',
+        asOf,
+      },
+      payloadToLeoReusable: {
+        value: 27_000,
+        unit: 'kg',
+        sources: ['wikipedia_falcon9_falconheavy_launches', 'spacex_falcon_heavy_page'],
+        note: 'Approximate reusable Falcon Heavy LEO payload assumption for the interactive marginal-cost model; expendable capability remains 63,800 kg.',
         asOf,
       },
       payloadToGto: {
@@ -278,8 +308,29 @@ export const vehicles = {
       totalFlights: {
         value: 12,
         unit: 'flights',
-        sources: ['spacex_launches'],
-        note: 'Counted from SpaceX completed-missions listing through the latest Falcon Heavy mission visible during research; keep this value fresh before publication.',
+        sources: ['wikipedia_falcon9_falconheavy_launches'],
+        note: '12 total Falcon Heavy launches as of May 2026. The 2025 gap was due to payload-readiness delays, not vehicle unavailability. Phase 3 Lane 2 NSSL manifest reloads 4-5 Falcon Heavy missions for 2026-2029.',
+        asOf,
+      },
+      launches2025: {
+        value: 0,
+        unit: 'launches',
+        sources: ['wikipedia_falcon9_falconheavy_launches'],
+        note: 'No Falcon Heavy launches in 2025; delays were payload-readiness driven.',
+        asOf,
+      },
+      launches2026: {
+        value: 1,
+        unit: 'launches',
+        sources: ['wikipedia_falcon9_falconheavy_launches'],
+        note: 'One Falcon Heavy launch through May 2026: ViaSat-3 F3 in April 2026.',
+        asOf,
+      },
+      missionSuccessRate: {
+        value: 1,
+        unit: 'share',
+        sources: ['wikipedia_falcon9_falconheavy_launches'],
+        note: 'Falcon Heavy mission success rate across 12 launches as of May 2026.',
         asOf,
       },
       costPerKgEstimate: {
@@ -289,6 +340,56 @@ export const vehicles = {
         note: 'Derived as $97M list price divided by 63,800 kg expendable LEO payload capability; this is list-price economics, not marginal cost.',
         asOf,
       },
+    },
+    modelInputs: {
+      sideBoosterBuildCost: {
+        label: 'Side booster build cost',
+        value: { low: 30_000_000, mid: 40_000_000, high: 50_000_000 },
+        step: 1_000_000,
+        unit: 'USD',
+        sources: ['musk_iac_inverse', 'wikipedia_falcon9_falconheavy_launches'],
+        note: 'Per-side-booster cost; Falcon Heavy side boosters share Falcon 9 booster economics and are multiplied by two in the model.',
+        asOf,
+      },
+      sideBoosterUsefulFlights: {
+        label: 'Side booster useful flights',
+        value: { low: 10, mid: 10, high: 30 },
+        step: 1,
+        unit: 'flights',
+        sources: ['musk_iac_inverse', 'spacex_users_guide_2025', 'wikipedia_falcon9_falconheavy_launches'],
+        note: 'Sensitivity range mirrors Falcon 9 booster reuse economics because Falcon Heavy side boosters are Falcon 9-derived and routinely recovered.',
+        asOf,
+      },
+      centerCoreCost: {
+        label: 'Center core expended',
+        value: 40_000_000,
+        unit: 'USD',
+        sources: ['musk_iac_inverse', 'wikipedia_falcon9_falconheavy_launches'],
+        note: 'Fixed model line: Falcon Heavy center core is typically expended on high-energy missions and faces harsher loads than Falcon 9 side boosters.',
+        asOf,
+      },
+      stageTwoCost: {
+        label: 'Stage 2 cost',
+        value: { low: 7_000_000, mid: 10_000_000, high: 12_000_000 },
+        step: 500_000,
+        unit: 'USD',
+        sources: ['musk_iac_inverse', 'nextbigfuture_decomp'],
+        note: 'Falcon Heavy uses the Falcon-family upper-stage economics for this simplified model.',
+        asOf,
+      },
+      fuelPerLaunch: {
+        label: 'Fuel per launch',
+        value: 600_000,
+        unit: 'USD',
+        sources: ['musk_iac_inverse'],
+        note: 'Approximate three-core propellant cost, modeled as roughly three times Falcon 9 fuel cost.',
+        asOf,
+      },
+    },
+    panelNote: {
+      title: 'Operational list-price floor',
+      body: 'At $97M divided by 63,800 kg, Falcon Heavy is about $1,520/kg to LEO at list price: the lowest public $/kg of any operational rocket today. The marginal model below uses an approximate 27,000 kg reusable-side-booster payload case.',
+      sources: ['spacex_capabilities_2022_archive', 'spacex_falcon_heavy_page'],
     },
   },
   dragon: {
@@ -365,6 +466,6 @@ export const companyMetrics = {
   },
 };
 
-export const vehicleOrder = ['falcon9', 'starship'];
+export const vehicleOrder = ['falcon9', 'falconHeavy', 'starship'];
 
 export const launchVehicleReferenceOrder = ['falcon9', 'falconHeavy', 'starship'];

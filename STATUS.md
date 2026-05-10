@@ -50,6 +50,16 @@ Done
 - Updated cost stack chart segments to the requested high-contrast Falcon and Starship palettes with a custom solid-swatch legend
 - Confirmed `npm run build` passes after the pre-Phase-4 polish pass
 - Browser smoke-tested the pre-Phase-4 polish with no console warnings/errors, numbered curve markers present, lower reference block removed, and requested cost-stack legend colors present
+- Applied Launch_Report_Findings research updates before closing Phase 4
+- Corrected the Starship $/kg curve to distinguish the $100-$500/kg near-term analyst range from the $10-$50/kg long-term target
+- Added the SpaceX October 2025 $100M per metric ton lunar/Mars surface-cargo price note below the curve
+- Updated Starship development spend to $15B with Bloomberg / Reuters May 2026 sourcing
+- Updated Falcon Heavy launch-count context to 12 launches, 0 in 2025, 1 in 2026, and 100% mission success as of May 2026
+- Added Starship V3 context callout covering Flight 12 timing, payload, Raptor 3, refueling architecture, and variants
+- Added Falcon Heavy as a third interactive economics model with side-booster reuse sliders, fixed expended center-core line, stage 2, fuel, margin, and $/kg output
+- Reduced hero/header vertical spacing so Section 02 appears higher on a 1080p viewport
+- Confirmed `npm run build` passes after the research update pass
+- Browser smoke-tested the research update pass with no console warnings/errors and no mobile horizontal overflow
 
 Next
 

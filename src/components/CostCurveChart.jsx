@@ -176,9 +176,13 @@ function CostCurveChart() {
             The curve that makes reuse obvious
           </h3>
         </div>
-        <div className="max-w-sm text-sm leading-6 text-zinc-400">
+        <div className="max-w-md text-sm leading-6 text-zinc-400">
           Solid line is observed launch cost; dashed line is the Starship projection range.
         </div>
+      </div>
+
+      <div className="mb-5 rounded-md border border-starship/20 bg-starship/10 px-4 py-3 text-sm leading-6 text-zinc-300">
+        <span className="font-medium text-starship">Analyst range:</span> $100-$500/kg near-term; $10-$50/kg long-term target.
       </div>
 
       <div ref={containerRef} className="relative min-h-[620px] w-full sm:min-h-[560px]">
@@ -275,6 +279,10 @@ function CostCurveChart() {
 
       <p className="mt-5 max-w-3xl text-sm leading-6 text-zinc-400">
         The economic story is not a straight line downward; it is a step-change curve where reuse turns launch cost from scarce infrastructure into an operating variable.
+      </p>
+      <p className="mt-3 max-w-3xl text-sm leading-6 text-zinc-500">
+        Musk's $10/kg target is a long-run marginal cost floor, not a near-term price. SpaceX's current commercial price for lunar/Mars surface cargo is $100M per metric ton ($100,000/kg).
+        <Cite sourceIds={['spacex_surface_cargo_pricing_2025']} accent="starship" />
       </p>
     </div>
   );

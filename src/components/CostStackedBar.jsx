@@ -20,6 +20,12 @@ const componentColors = {
     stageTwo: '#1E3A5F',
     fuel: '#7DD3FC',
   },
+  heavy: {
+    hardware: '#7B61FF',
+    refurb: '#A78BFA',
+    stageTwo: '#4C1D95',
+    fuel: '#C4B5FD',
+  },
   starship: {
     hardware: '#FF6B35',
     refurb: '#F59E0B',
@@ -30,6 +36,7 @@ const componentColors = {
 
 const vehicleAccent = {
   falcon: '#0077DA',
+  heavy: '#B7A8FF',
   starship: '#FF6B35',
 };
 
@@ -51,12 +58,31 @@ const legendGroups = [
     label: 'Starship',
     segments: ['hardware', 'refurb', 'fuel'],
   },
+  {
+    id: 'heavy',
+    label: 'Falcon Heavy',
+    segments: ['hardware', 'stageTwo', 'fuel'],
+  },
 ];
 
-const getHardwareCost = (economics) =>
-  economics.components.boosterAmortizationUsd ??
-  economics.components.stackAmortizationUsd ??
-  (economics.components.superHeavyAmortizationUsd ?? 0) + (economics.components.shipAmortizationUsd ?? 0);
+const getHardwareCost = (economics) => {
+  if (Number.isFinite(economics.components.boosterAmortizationUsd)) {
+    return economics.components.boosterAmortizationUsd;
+  }
+
+  const falconHeavyHardware =
+    (economics.components.sideBoosterAmortizationUsd ?? 0) + (economics.components.centerCoreUsd ?? 0);
+
+  if (falconHeavyHardware > 0) {
+    return falconHeavyHardware;
+  }
+
+  if (Number.isFinite(economics.components.stackAmortizationUsd)) {
+    return economics.components.stackAmortizationUsd;
+  }
+
+  return (economics.components.superHeavyAmortizationUsd ?? 0) + (economics.components.shipAmortizationUsd ?? 0);
+};
 
 const getChartData = (items) =>
   items.map(({ vehicle, economics }) => ({
