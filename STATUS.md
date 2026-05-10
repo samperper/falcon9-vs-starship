@@ -60,22 +60,18 @@ Done
 - Reduced hero/header vertical spacing so Section 02 appears higher on a 1080p viewport
 - Confirmed `npm run build` passes after the research update pass
 - Browser smoke-tested the research update pass with no console warnings/errors and no mobile horizontal overflow
+- Added the human-provided opener prose as Section 01 before the model and charts
+- Added the human-provided closer prose in Section 04 before the source list
+- Finalized README.md with the live URL, one-sentence description, author name, and public-source methodology note
+- Confirmed `npm run build` passes after adding Phase 4 prose and finalizing README.md
 
 Next
 
-- Add the human-written opener prose
-- Add the human-written closer prose
-- Polish the sources section and bibliography presentation
-- Finalize README with thesis-light intro, methodology note, source summary, and contact details
-- Run a final responsive polish pass
-- Run `npm run build`
-- Update STATUS.md to mark Phase 4 done
-- Commit and push Phase 4 when complete
-- Stop and report back for final review
+- Commit and push the Phase 4 prose / README update
+- Send the live URL back for final human review
 
 Blockers / questions for human
 
-- Human needs to provide opener and closer prose for Phase 4.
 - Human should still spot-check src/data/vehicles.js and src/data/costCurve.js against original sources.
 - Falcon Heavy flight count and Dragon fleet mission count are time-sensitive and should be refreshed before final publication.
 

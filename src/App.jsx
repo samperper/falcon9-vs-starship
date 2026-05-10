@@ -20,6 +20,14 @@ function App() {
       </div>
 
       <div className="space-y-24 py-16 sm:space-y-28 sm:py-20">
+        <Section eyebrow="Section 01" title="Overview">
+          <div className="max-w-3xl rounded-lg border border-white/10 bg-black/25 p-5 sm:p-6">
+            <p className="text-lg leading-8 text-zinc-300">
+              Space is getting cheaper, and the numbers behind it are hard to find in one place. I put this together to break down how SpaceX launches rockets across its fleet, what each vehicle costs to fly, who's buying, and where the economics are heading as Starship comes online. All assumptions are sourced and adjustable so you can see how the model moves under different scenarios.
+            </p>
+          </div>
+        </Section>
+
         <Section eyebrow="Section 02" title="The Side-by-Side">
           <SideBySideModel />
           <div className="mt-10 rounded-lg border border-white/10 bg-black/25 p-5 sm:p-6">
@@ -40,6 +48,11 @@ function App() {
         </Section>
 
         <Section eyebrow="Section 04" title="Closer + Sources">
+          <div className="mb-10 max-w-3xl rounded-lg border border-white/10 bg-black/25 p-5 sm:p-6">
+            <p className="text-lg leading-8 text-zinc-300">
+              Everything here is built from public sources: SpaceX's own pricing documents, SEC filings, Congressional Research Service reports, and analyst research from Payload Research and Sacra. Cost estimates involve real uncertainty, especially for Starship, which is still in active development. Where sources disagree I've shown the range rather than picking a single number. The full source list is below.
+            </p>
+          </div>
           <Bibliography />
         </Section>
       </div>

@@ -1,5 +1,18 @@
 # AGENT_LOG
 
+## 2026-05-09 - Phase 4 prose and README finalization
+
+Implemented:
+- Added the user-provided opener text exactly as supplied in a new Section 01 before the model and charts.
+- Added the user-provided closer text exactly as supplied in Section 04 before the bibliography/source list.
+- Finalized `README.md` with the live URL, one-sentence project description, Sam Perper author line, and public-source methodology note.
+
+Verification:
+- `npm run build` passed. Vite still reports the existing non-failing Recharts chunk-size warning.
+
+Notes / follow-up:
+- Live URL for final human review: https://falcon9-vs-starship.vercel.app
+
 ## 2026-05-09 - Research updates before Phase 4 close
 
 Read `Launch_Report_Findings` first and used it as the source packet for the requested material updates. The file was untracked at session start and is part of this update set because it contains the research backing for the changes.
