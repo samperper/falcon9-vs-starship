@@ -91,6 +91,32 @@ function VehicleSnapshotCards() {
   );
 }
 
+function StarshipV3Callout() {
+  const context = vehicles.starship.v3Context;
+
+  return (
+    <div className="mt-5 rounded-lg border border-starship/20 bg-starship/10 p-5 sm:p-6">
+      <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+        <div className="max-w-md">
+          <p className="font-mono text-xs font-medium uppercase tracking-[0.16em] text-starship">
+            {context.eyebrow}
+            <Cite sourceIds={context.sources} accent="starship" />
+          </p>
+          <p className="mt-3 text-sm leading-6 text-zinc-400">{context.note}</p>
+        </div>
+        <ul className="grid flex-1 gap-3 text-sm leading-6 text-zinc-300 sm:grid-cols-2">
+          {context.items.map((item) => (
+            <li key={item} className="flex gap-2">
+              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-starship" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
 function SideBySideModel() {
   const [inputsByVehicle, setInputsByVehicle] = useState(initialInputs);
   const [showPriceCeiling, setShowPriceCeiling] = useState(false);
@@ -108,9 +134,14 @@ function SideBySideModel() {
     [inputsByVehicle],
   );
 
-  const falconCostPerKg = items.find((item) => item.vehicle.id === 'falcon9').economics.costPerKgUsd;
-  const starshipCostPerKg = items.find((item) => item.vehicle.id === 'starship').economics.costPerKgUsd;
-  const starshipSavingsPerKg = Math.max(0, falconCostPerKg - starshipCostPerKg);
+  const falcon9Item = items.find((item) => item.vehicle.id === 'falcon9');
+  const falconHeavyItem = items.find((item) => item.vehicle.id === 'falconHeavy');
+  const starshipItem = items.find((item) => item.vehicle.id === 'starship');
+  const falconCostPerKg = falcon9Item.economics.costPerKgUsd;
+  const falconHeavyCostPerKg = falconHeavyItem.economics.costPerKgUsd;
+  const starshipCostPerKg = starshipItem.economics.costPerKgUsd;
+  const savingsComparator = falconHeavyCostPerKg > falconCostPerKg ? falconHeavyItem : falcon9Item;
+  const starshipSavingsPerKg = Math.max(0, savingsComparator.economics.costPerKgUsd - starshipCostPerKg);
 
   const handleInputChange = (vehicleId, inputId, nextValue) => {
     setInputsByVehicle((currentInputs) => ({
@@ -133,6 +164,9 @@ function SideBySideModel() {
             <h3 className="mt-3 text-3xl font-semibold leading-tight text-text sm:text-4xl">
               Move the assumptions. Watch the launch economics re-price.
             </h3>
+            <p className="mt-4 max-w-xl text-sm leading-6 text-zinc-400">
+              Adjust the inputs below to see how each vehicle's marginal cost, cost per kilogram, and contribution margin change in real time.
+            </p>
           </div>
           <div className="rounded-md border border-white/10 bg-black/35 px-4 py-3">
             <p className="text-xs font-medium uppercase tracking-[0.14em] text-zinc-500">
@@ -141,11 +175,13 @@ function SideBySideModel() {
             <p className="mt-1 font-mono text-2xl font-semibold tabular-nums text-starship">
               {formatCostPerKg(starshipSavingsPerKg)}
             </p>
-            <p className="text-xs text-zinc-500">vs Falcon 9</p>
+            <p className="text-xs text-zinc-500">vs {savingsComparator.vehicle.shortName}</p>
           </div>
         </div>
 
         <VehicleSnapshotCards />
+
+        <StarshipV3Callout />
 
         <div className="my-7 flex items-center gap-3">
           <span className="h-px flex-1 bg-white/10" />

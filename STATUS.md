@@ -75,10 +75,16 @@ Done
 - Reduced the model shell padding so three equal vehicle columns have enough room for 100px metric cards at 1280px, 1440px, and 1920px layout budgets
 - Confirmed `npm run build` passes after the desktop metric-card layout fix
 - Verified the available browser render has equal vehicle columns, metric cards above 100px, no metric label wrapping, the shortened Falcon Heavy subtitle, no console warnings/errors, and no overflow
+- Removed the redundant Falcon Heavy operational list-price floor card from the interactive column
+- Moved the Starship V3 callout into a standalone full-width editorial card above the interactive model panel
+- Updated the Starship savings badge to compare against whichever current Falcon model has the higher cost per kg, labeling the badge as Falcon 9 or Falcon Heavy accordingly
+- Added the one-line real-time model explainer beneath the "Move the assumptions" headline
+- Confirmed `npm run build` passes after the final cleanup pass
+- Browser smoke-tested the final cleanup with no console warnings/errors, no overflow, V3 placed before the interactive model, and the redundant Falcon Heavy card removed
 
 Next
 
-- Commit and push the desktop metric-card layout fix
+- Commit and push the final cleanup pass
 - Send the live URL back for final human review
 
 Blockers / questions for human

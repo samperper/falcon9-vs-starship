@@ -1,5 +1,20 @@
 # AGENT_LOG
 
+## 2026-05-10 - Final cleanup before review
+
+Implemented:
+- Removed the redundant Falcon Heavy "Operational list-price floor" card from the interactive Falcon Heavy column.
+- Moved the Starship V3 callout out of the Starship slider column and into a standalone full-width editorial card between the top vehicle reference cards and the interactive model panel.
+- Updated the Starship savings badge to compare Starship against whichever Falcon model currently has the higher cost per kilogram, and to label the comparison as Falcon 9 or Falcon Heavy accordingly.
+- Added the requested one-line model explainer below the "Move the assumptions" headline.
+
+Verification:
+- `npm run build` passed. Vite still reports the existing non-failing Recharts chunk-size warning.
+- Browser smoke test confirmed no console warnings/errors, no overflow, the redundant Falcon Heavy card removed, Starship V3 placed before the interactive model, default savings badge labeled against Falcon Heavy, and the new explainer line present.
+
+Notes / follow-up:
+- Live URL for final human review: https://falcon9-vs-starship.vercel.app
+
 ## 2026-05-10 - Desktop metric-card layout fix
 
 Implemented:
