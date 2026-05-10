@@ -16,6 +16,9 @@ function App() {
           <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-400 sm:text-lg sm:leading-8">
             An interactive look at launch economics across Falcon 9, Falcon Heavy, and Starship
           </p>
+          <p className="mt-4 font-mono text-xs font-medium uppercase tracking-[0.16em] text-zinc-500">
+            By Sam Perper
+          </p>
         </div>
       </div>
 
